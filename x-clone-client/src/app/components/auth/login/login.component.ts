@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(this.loginForm.value).subscribe(
         response => {
           console.log('User logged in successfully:', response);
-          // Handle successful login (e.g., store the token, navigate to home page)
+          this.router.navigate(['/']); // Navigate to home page or dashboard after login
         },
         error => {
           console.error('Error logging in:', error);
