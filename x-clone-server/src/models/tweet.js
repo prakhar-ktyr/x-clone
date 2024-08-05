@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('./comment'); // Ensure the Comment model is required
 
 const tweetSchema = new mongoose.Schema({
   content: { type: String, required: true, maxlength: 280 },

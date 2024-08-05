@@ -6,7 +6,8 @@ const cors = require('cors');
 const usersRoute = require('./routes/users');
 const authRoute = require('./routes/auth');
 const profileRoute = require('./routes/profile');
-const followRoute = require('./routes/follow'); // Import follow routes
+const followRoute = require('./routes/follow');
+const tweetRoute = require('./routes/tweets'); // Import tweet routes
 
 const app = express();
 const port = 3000;
@@ -19,7 +20,8 @@ app.use(cors());
 app.use('/api/users', usersRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/profile', profileRoute);
-app.use('/api/follow', followRoute); // Add follow routes
+app.use('/api/follow', followRoute);
+app.use('/api/tweets', tweetRoute); // Add tweet routes
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
