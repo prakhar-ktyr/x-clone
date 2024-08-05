@@ -7,7 +7,8 @@ const usersRoute = require('./routes/users');
 const authRoute = require('./routes/auth');
 const profileRoute = require('./routes/profile');
 const followRoute = require('./routes/follow');
-const tweetRoute = require('./routes/tweets'); // Import tweet routes
+const tweetRoute = require('./routes/tweets');
+const commentRoute = require('./routes/comments'); 
 
 const app = express();
 const port = 3000;
@@ -21,7 +22,8 @@ app.use('/api/users', usersRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/profile', profileRoute);
 app.use('/api/follow', followRoute);
-app.use('/api/tweets', tweetRoute); // Add tweet routes
+app.use('/api/tweets', tweetRoute);
+app.use('/api/comments', commentRoute); // Add comment routes
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
