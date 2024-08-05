@@ -1,26 +1,27 @@
-<div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <mat-card>
-          <mat-card-title>Login</mat-card-title>
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <mat-form-field class="w-100">
-                <mat-label>Email</mat-label>
-                <input matInput type="email" formControlName="email" required>
-              </mat-form-field>
-            </div>
-            <div class="mb-3">
-              <mat-form-field class="w-100">
-                <mat-label>Password</mat-label>
-                <input matInput type="password" formControlName="password" required>
-              </mat-form-field>
-            </div>
-            <button mat-raised-button color="primary" type="submit">Login</button>
-          </form>
-        </mat-card>
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-6 col-lg-5">
+      <div class="card p-4 shadow-sm">
+        <div class="text-center mb-4">
+          <img src="assets/x-logo.png" alt="X Logo" class="mb-3" style="width: 50px;">
+          <h2>Login</h2>
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" required>
+            </mat-form-field>
+          </div>
+          <div class="mb-3">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password" required>
+            </mat-form-field>
+          </div>
+          <button mat-raised-button color="primary" type="submit" class="w-100">Login</button>
+        </form>
       </div>
     </div>
   </div>
-  
-
+</div>
