@@ -8,13 +8,19 @@ const secret = process.env.JWT_SECRET;
 
 // Sign up route
 router.post('/signup', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, handle } = req.body;
 
   try {
-    // Check if the user already exists
+    // Check if the email already exists
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+
+    // Check if the handle already exists
+    user = await User.findOne({ handle });
+    if (user) {
+      return res.status(400).json({ message: 'Handle already exists' });
     }
 
     // Create a new user
@@ -22,6 +28,7 @@ router.post('/signup', async (req, res) => {
       name,
       email,
       password: await bcrypt.hash(password, 10),
+      handle
     });
 
     await user.save();
@@ -29,7 +36,7 @@ router.post('/signup', async (req, res) => {
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, secret, { expiresIn: '1h' });
 
-    res.status(201).json({ token, user: { id: user._id, name, email } });
+    res.status(201).json({ token, user: { id: user._id, name, email, handle } });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -55,7 +62,7 @@ router.post('/login', async (req, res) => {
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, secret, { expiresIn: '1h' });
 
-    res.json({ token, user: { id: user._id, name: user.name, email } });
+    res.json({ token, user: { id: user._id, name: user.name, email, handle: user.handle } });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      handle: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
@@ -29,7 +30,7 @@ export class RegisterComponent implements OnInit {
           this.authService.login(this.registerForm.value).subscribe(
             loginResponse => {
               console.log('User logged in successfully:', loginResponse);
-              this.router.navigate(['/']); // Navigate to home page or dashboard after login
+              this.router.navigate(['/home']); // Navigate to home page after login
             },
             loginError => {
               console.error('Error logging in:', loginError);

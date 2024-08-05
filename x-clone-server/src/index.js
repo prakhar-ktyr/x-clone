@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const usersRoute = require('./routes/users');
 const authRoute = require('./routes/auth');
+const profileRoute = require('./routes/profile');
+const followRoute = require('./routes/follow'); // Import follow routes
 
 const app = express();
 const port = 3000;
@@ -16,6 +18,8 @@ app.use(cors());
 // Routes
 app.use('/api/users', usersRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/profile', profileRoute);
+app.use('/api/follow', followRoute); // Add follow routes
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
