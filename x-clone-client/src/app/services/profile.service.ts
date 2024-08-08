@@ -26,4 +26,8 @@ export class ProfileService {
   updateProfile(profileData: any): Observable<any> {
     return this.http.put(this.apiUrl, profileData, { headers: this.getHeaders() });
   }
+
+  uploadProfilePicture(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/upload-profile-picture`, formData, { headers: this.getHeaders() });
+  }
 }

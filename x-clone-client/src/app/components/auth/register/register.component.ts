@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
           this.authService.login(this.registerForm.value).subscribe(
             loginResponse => {
               console.log('User logged in successfully:', loginResponse);
-              this.router.navigate(['/home']); // Navigate to home page after login
+              this.router.navigate(['/profile-setup']); // Navigate to home page after login
             },
             loginError => {
               console.error('Error logging in:', loginError);

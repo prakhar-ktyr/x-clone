@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 const User = require('../models/user');
 const auth = require('../middleware/auth');
@@ -7,6 +8,34 @@ const auth = require('../middleware/auth');
 router.get('/test', (req, res) => {
   console.log('Test route hit'); // Add this line
   res.send('Test route working');
+});
+
+// Set up multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${req.user.id}-${file.originalname}`);
+  }
+});
+const upload = multer({ storage: storage });
+
+// Profile picture upload route
+router.post('/upload-profile-picture', auth, upload.single('profilePicture'), async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.profilePicture = req.file.path;
+    await user.save();
+
+    res.json({ message: 'Profile picture uploaded successfully', profilePicture: req.file.path });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // Get the authenticated user's profile

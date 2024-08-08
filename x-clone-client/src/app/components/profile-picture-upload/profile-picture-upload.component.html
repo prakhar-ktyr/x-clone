@@ -1,0 +1,19 @@
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-6 col-lg-5">
+        <div class="card p-4 shadow-sm text-center">
+          <img src="assets/x-logo.png" alt="X Logo" class="mb-3" style="width: 50px;">
+          <h2>Pick a profile picture</h2>
+          <p>Have a favorite selfie? Upload it now.</p>
+          <div class="profile-picture-upload mb-4">
+            <label for="file-input">
+              <img src="assets/default-profile.png" alt="Default Profile Picture" class="img-fluid rounded-circle" style="width: 150px;">
+              <input id="file-input" type="file" (change)="onFileSelected($event)" style="display: none;">
+            </label>
+          </div>
+          <button mat-raised-button color="primary" (click)="onSkip()">Skip for now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

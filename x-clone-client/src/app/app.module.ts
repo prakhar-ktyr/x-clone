@@ -15,6 +15,8 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileSetupComponent } from './components/profile-setup/profile-setup.component';
+import { ProfilePictureUploadComponent } from './components/profile-picture-upload/profile-picture-upload.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { ProfileComponent } from './components/profile/profile.component';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    ProfileSetupComponent,
+    ProfilePictureUploadComponent
   ],
   imports: [
     BrowserModule,

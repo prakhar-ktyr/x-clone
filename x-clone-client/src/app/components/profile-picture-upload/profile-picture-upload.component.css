@@ -1,0 +1,9 @@
+.profile-picture-upload label {
+    cursor: pointer;
+  }
+  
+  .profile-picture-upload img {
+    border: 3px solid #1DA1F2;
+    padding: 5px;
+  }
+  
