@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   bio: String,
   website: String,
   location: String,
-  profilePicture: String,
+  profilePicture: { type: String, default: 'uploads/default-profile.png' }, // Default profile picture path
   joined: { type: Date, default: Date.now },
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

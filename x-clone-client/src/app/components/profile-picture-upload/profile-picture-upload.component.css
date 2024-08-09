@@ -7,3 +7,35 @@
     padding: 5px;
   }
   
+
+  .card {
+    border-radius: 8px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  button {
+    font-size: 1.2em;
+    padding: 10px;
+  }
+  
+  button.mat-raised-button {
+    background-color: #1DA1F2;
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+    height: 48px;
+  }
+  
+  button.mat-raised-button:hover {
+    background-color: #0d8ce5;
+  }
+  
+  .mat-form-field {
+    margin-bottom: 20px;
+  }
+  

@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  tweetContent: string = '';
+  maxCharacters: number = 280;
+  charactersRemaining: number = this.maxCharacters;
 
   constructor() { }
 
@@ -13,4 +16,7 @@ export class HomeComponent implements OnInit {
     // Fetch tweets to display here
   }
 
+  updateCharacterCount(): void {
+    this.charactersRemaining = this.maxCharacters - this.tweetContent.length;
+  }
 }
