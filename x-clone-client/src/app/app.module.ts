@@ -18,6 +18,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ProfileSetupComponent } from './components/profile-setup/profile-setup.component';
 import { ProfilePictureUploadComponent } from './components/profile-picture-upload/profile-picture-upload.component';
+import { TweetService } from './services/tweet.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { ProfilePictureUploadComponent } from './components/profile-picture-uplo
     MatIconModule,
     FormsModule
   ],
-  providers: [],
+  providers: [TweetService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

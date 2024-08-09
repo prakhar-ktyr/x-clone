@@ -78,9 +78,9 @@
             <textarea class="form-control" rows="3" placeholder="What is happening?!" [(ngModel)]="tweetContent" (input)="updateCharacterCount()"></textarea>
             <div class="d-flex justify-content-between align-items-center mt-2">
               <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining</span>
-              <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0">Tweet</button>
+              <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
             </div>
-          </div>
+          </div>          
           
           <div class="tweets-list">
             <!-- Tweets will be dynamically added here -->
