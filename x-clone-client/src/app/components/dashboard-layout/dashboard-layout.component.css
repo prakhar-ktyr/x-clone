@@ -1,0 +1,163 @@
+#menubar .nav-link {
+    color: #000 !important; /* Force black color */
+    font-weight: 600 !important;
+    font-size: 18px !important; /* Increase the font size */
+    padding: 10px 15px !important;
+    text-decoration: none !important;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out !important;
+  }
+  
+  #menubar .nav-link:hover, 
+  #menubar .nav-link.active {
+    background-color: #e8f5fe !important;
+    border-radius: 25px !important;
+    color: #1DA1F2 !important; /* Highlight the link */
+  }
+  
+  .navbar-nav .nav-link.active {
+    background-color: #e8f5fe !important;
+    border-radius: 25px !important;
+    color: #1DA1F2 !important; /* Highlight the link */
+  }
+  
+  
+  #menubar .nav-link i {
+    font-size: 20px !important;
+    color: #000 !important; /* Force black color for icons */
+  }
+  
+  #menubar .nav-link span {
+    margin-left: 10px !important;
+  }
+  
+  body {
+    background-color: #f5f8fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  #menubar {
+    color: #000 !important; /* Force black color */
+  }
+  
+  .btn-block {
+    width: 100%; /* Adjust the button width */
+  }
+  
+  .tweet-box textarea {
+    width: 100%;
+    border: 1px solid #e1e8ed;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .tweet-box .btn {
+    border-radius: 25px;
+    padding: 10px 20px; /* Adjust padding for better alignment */
+  }
+  
+  .tab-content {
+    border-top: 1px solid #e1e8ed;
+  }
+  
+  .nav-tabs .nav-link {
+    color: #1DA1F2;
+  }
+  
+  .nav-tabs .nav-link.active {
+    color: #000;
+    font-weight: bold;
+    border: none;
+  }
+  
+  .tweets-list {
+    padding: 20px 0;
+  }
+  
+  /* Responsive styling */
+  @media (max-width: 1200px) {
+    .navbar-nav .nav-link span {
+      display: none;
+    }
+  
+    .navbar-nav {
+      width: 50px;
+    }
+  
+    .navbar-brand img {
+      width: 25px; /* Adjust logo size */
+    }
+  
+    .navbar-nav .nav-link i {
+      margin-left: 10px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .navbar-nav .nav-link span {
+      display: none;
+    }
+  
+    .navbar-nav {
+      width: 50px;
+    }
+  
+    .navbar-brand img {
+      width: 25px; /* Adjust logo size */
+    }
+  
+    .navbar-nav .nav-link i {
+      margin-left: 10px;
+    }
+  
+    main {
+      padding-left: 60px; /* To ensure content aligns next to the icons */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .navbar-nav {
+      width: 50px;
+      padding-left: 5px;
+    }
+  
+    .tweet-box textarea {
+      width: 90%;
+    }
+  
+    .tab-content {
+      padding-left: 60px; /* Ensure tabs align properly */
+    }
+  }
+  
+  .navbar-brand img {
+    margin-bottom: 20px;
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .btn-block {
+    width: 80%; /* Adjust the width of the Tweet button */
+  }
+  
+  .btn-block-small {
+    width: 60px; /* Reduced width for smaller screens */
+    height: 40px;
+    font-size: 12px;
+    padding: 0;
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .btn-block {
+      display: none;
+    }
+  
+    .btn-block-small {
+      display: block;
+    }
+  }
+  

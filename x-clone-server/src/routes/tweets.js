@@ -1,16 +1,42 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const router = express.Router();
 const Tweet = require('../models/tweet');
 const auth = require('../middleware/auth');
 
-// CREATE: Add a new tweet
-router.post('/', auth, async (req, res) => {
+// Configure Multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Directory where files will be stored
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Rename file to avoid conflicts
+  },
+});
+
+const upload = multer({ storage: storage });
+
+// CREATE: Add a new tweet with file uploads
+router.post('/', auth, upload.fields([{ name: 'images', maxCount: 5 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
   const { content } = req.body;
+  let imagePaths = [];
+  let videoPath = '';
+
+  if (req.files.images) {
+    imagePaths = req.files.images.map(file => file.path);
+  }
+
+  if (req.files.video) {
+    videoPath = req.files.video[0].path;
+  }
 
   try {
     const newTweet = new Tweet({
       content,
       author: req.user.id,
+      images: imagePaths,
+      video: videoPath,
     });
 
     await newTweet.save();
@@ -23,12 +49,17 @@ router.post('/', auth, async (req, res) => {
 // READ: Get all tweets
 router.get('/', async (req, res) => {
   try {
-    const tweets = await Tweet.find().populate('author', 'name handle').populate('comments');
+    const tweets = await Tweet.find()
+      .populate('author', 'name handle')
+      .populate('comments')
+      .populate('likes')
+      .populate('retweets');
     res.json(tweets);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 // READ: Get a tweet by ID
 router.get('/:id', async (req, res) => {

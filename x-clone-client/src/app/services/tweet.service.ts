@@ -19,7 +19,7 @@ export class TweetService {
     });
   }
 
-  createTweet(tweetData: any): Observable<any> {
+  createTweet(tweetData: FormData): Observable<any> {
     return this.http.post(this.apiUrl, tweetData, { headers: this.getHeaders() });
   }
 

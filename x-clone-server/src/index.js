@@ -9,9 +9,13 @@ const profileRoute = require('./routes/profile');
 const followRoute = require('./routes/follow');
 const tweetRoute = require('./routes/tweets');
 const commentRoute = require('./routes/comments'); 
+const path = require('path');
 
 const app = express();
 const port = 3000;
+
+// Serve static files from the "uploads" directory
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // Middleware
 app.use(bodyParser.json());

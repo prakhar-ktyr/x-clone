@@ -7,6 +7,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { HomeComponent } from './components/home/home.component';
 import { ProfileSetupComponent } from './components/profile-setup/profile-setup.component';
 import { ProfilePictureUploadComponent } from './components/profile-picture-upload/profile-picture-upload.component';
+import { DashboardLayoutComponent } from './components/dashboard-layout/dashboard-layout.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -14,8 +15,19 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'profile-setup', component: ProfileSetupComponent, canActivate: [AuthGuard] },
   { path: 'profile-picture-upload', component: ProfilePictureUploadComponent, canActivate: [AuthGuard] },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }
+  {
+    path: '',
+    component: DashboardLayoutComponent, // Layout with left/right panels
+    children: [
+      { path: 'home', component: HomeComponent }, // Home Page
+      // Add more routes as needed
+    ],
+  },
+  { path: '**', redirectTo: '' }, // Redirect for unmatched routes
 ];
+
+
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

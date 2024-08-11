@@ -1,121 +1,64 @@
-<div class="container-fluid">
-  <div class="row">
-    <!-- Left Menu -->
-    <nav class="col-12 col-md-2 col-lg-3 px-0 navbar navbar-expand-md navbar-light bg-white flex-md-column">
-      <div class="d-flex flex-column align-items-center align-items-md-start px-3 pt-2 text-dark">
-        <a href="/" class="navbar-brand my-2">
-          <img src="assets/x-logo.png" alt="X Logo" style="width: 30px;">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav flex-column w-100">
-            <li class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#">
-                <i class="fas fa-home"></i>
-                <span class="d-none d-md-inline ms-2">Home</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#">
-                <i class="fas fa-hashtag"></i>
-                <span class="d-none d-md-inline ms-2">Explore</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#">
-                <i class="fas fa-bell"></i>
-                <span class="d-none d-md-inline ms-2">Notifications</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#">
-                <i class="fas fa-envelope"></i>
-                <span class="d-none d-md-inline ms-2">Messages</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#">
-                <i class="fas fa-bookmark"></i>
-                <span class="d-none d-md-inline ms-2">Bookmarks</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#">
-                <i class="fas fa-user"></i>
-                <span class="d-none d-md-inline ms-2">Profile</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link d-flex align-items-center" href="#">
-                <i class="fas fa-sign-out-alt"></i>
-                <span class="d-none d-md-inline ms-2">Logout</span>
-              </a>
-            </li>
-          </ul>
-          <button class="btn btn-primary btn-block mt-3" style="background-color: #1DA1F2;">Tweet</button>
+<div class="tab-content px-3" id="homeTabContent">
+  <div class="tab-pane fade show active" id="for-you" role="tabpanel" aria-labelledby="for-you-tab">
+    <div class="tweet-box my-3">
+      <textarea class="form-control" rows="3" placeholder="What is happening?!" [(ngModel)]="tweetContent" (input)="updateCharacterCount()"></textarea>
+      
+      <!-- File input for images -->
+      <input type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*" class="form-control mt-2" />
+    
+      <!-- File input for video -->
+      <input type="file" (change)="onFileChange($event, 'video')" accept="video/*" class="form-control mt-2" />
+    
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining</span>
+        <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
+      </div>
+    </div>
+    
+    <div class="tweets-list">
+      <div *ngFor="let tweet of tweets" class="tweet my-3 p-3 border rounded">
+        <div class="tweet-author">
+          <strong>{{ tweet.author.name }} (@{{ tweet.author.handle }})</strong>
+          <span class="text-muted">{{ tweet.createdAt | date:'short' }}</span>
         </div>
-      </div>
-    </nav>
-
-    <!-- Center Content -->
-    <main class="col-12 col-md-8 col-lg-6 bg-white">
-      <div class="d-flex justify-content-between align-items-center border-bottom px-3 py-2">
-        <h6 class="mb-0">Home</h6>
-      </div>
-      <ul class="nav nav-tabs justify-content-center" id="homeTab" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="for-you-tab" data-bs-toggle="tab" href="#for-you" role="tab" aria-controls="for-you" aria-selected="true">For You</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="following-tab" data-bs-toggle="tab" href="#following" role="tab" aria-controls="following" aria-selected="false">Following</a>
-        </li>
-      </ul>
-      <div class="tab-content px-3" id="homeTabContent">
-        <div class="tab-pane fade show active" id="for-you" role="tabpanel" aria-labelledby="for-you-tab">
-          <div class="tweet-box my-3">
-            <textarea class="form-control" rows="3" placeholder="What is happening?!" [(ngModel)]="tweetContent" (input)="updateCharacterCount()"></textarea>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining</span>
-              <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
-            </div>
-          </div>          
-          
-          <div class="tweets-list">
-            <!-- Tweets will be dynamically added here -->
+        <div class="tweet-content my-2">
+          {{ tweet.content }}
+        </div>
+    
+        <!-- Display images if available -->
+        <div class="tweet-images my-2" *ngIf="tweet.images && tweet.images.length > 0">
+          <div *ngFor="let image of tweet.images">
+            <img [src]="'http://localhost:3000/' + image" alt="Tweet image" class="img-fluid rounded mb-2" />
           </div>
         </div>
-        <div class="tab-pane fade" id="following" role="tabpanel" aria-labelledby="following-tab">
-          <!-- Following content -->
-          <div class="tweet-box my-3">
-            <textarea class="form-control" rows="3" placeholder="What is happening?!" [(ngModel)]="tweetContent" (input)="updateCharacterCount()"></textarea>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining</span>
-              <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0">Tweet</button>
-            </div>
-          </div>
+    
+        <!-- Display video if available -->
+        <div class="tweet-video my-2" *ngIf="tweet.video">
+          <video #videoElement controls loop muted class="img-fluid rounded">
+            <source [src]="'http://localhost:3000/' + tweet.video" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+    
+        <div class="tweet-interactions d-flex justify-content-between">
+          <span><i class="fas fa-heart"></i> {{ tweet.likes.length }}</span>
+          <span><i class="fas fa-comment"></i> {{ tweet.comments.length }}</span>
+          <span><i class="fas fa-retweet"></i> {{ tweet.retweets.length }}</span>
         </div>
       </div>
-    </main>
-
-    <!-- Right Sidebar -->
-    <aside class="col-3 d-none d-lg-block bg-white">
-      <div class="p-3">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Search">
-          <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-        </div>
-        <div class="bg-light p-3 rounded">
-          <h6>What's happening</h6>
-          <ul class="list-unstyled">
-            <li><a href="#">Trending Topic 1</a></li>
-            <li><a href="#">Trending Topic 2</a></li>
-            <li><a href="#">Trending Topic 3</a></li>
-            <li><a href="#">Trending Topic 4</a></li>
-          </ul>
-        </div>
+    </div>
+    
+    
+    
+  </div>
+  <div class="tab-pane fade" id="following" role="tabpanel" aria-labelledby="following-tab">
+    <!-- Following content -->
+    <div class="tweet-box my-3">
+      <textarea class="form-control" rows="3" placeholder="What is happening?!" [(ngModel)]="tweetContent" (input)="updateCharacterCount()"></textarea>
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining</span>
+        <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0">Tweet</button>
       </div>
-    </aside>
+    </div>
   </div>
 </div>

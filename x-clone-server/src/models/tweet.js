@@ -7,6 +7,8 @@ const tweetSchema = new mongoose.Schema({
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   retweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  images: [{ type: String }], // Array of image file paths
+  video: { type: String },    // Single video file path
   createdAt: { type: Date, default: Date.now },
 });
 
