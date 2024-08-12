@@ -8,6 +8,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileSetupComponent } from './components/profile-setup/profile-setup.component';
 import { ProfilePictureUploadComponent } from './components/profile-picture-upload/profile-picture-upload.component';
 import { DashboardLayoutComponent } from './components/dashboard-layout/dashboard-layout.component';
+import { ProfileDashboardComponent } from './components/profile-dashboard/profile-dashboard.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
     component: DashboardLayoutComponent, // Layout with left/right panels
     children: [
       { path: 'home', component: HomeComponent }, // Home Page
+      { path: 'profile', component: ProfileDashboardComponent }
       // Add more routes as needed
     ],
   },

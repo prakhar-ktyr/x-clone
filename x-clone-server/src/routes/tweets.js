@@ -75,6 +75,20 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// READ: Get tweets by the logged-in user
+router.get('/user', auth, async (req, res) => {
+  try {
+    const tweets = await Tweet.find({ author: req.user.id })
+      .populate('author', 'name handle')
+      .populate('comments')
+      .populate('likes')
+      .populate('retweets');
+    res.json(tweets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 // READ: Get a tweet by ID
 router.get('/:id', async (req, res) => {

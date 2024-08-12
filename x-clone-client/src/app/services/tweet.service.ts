@@ -9,7 +9,6 @@ import { AuthService } from './auth.service';
 })
 export class TweetService {
   private apiUrl = `${environment.apiUrl}/tweets`;
-  private followUrl = `${environment.apiUrl}/follow`; // Add the follow base URL
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -28,11 +27,15 @@ export class TweetService {
     return this.http.get(this.apiUrl, { headers: this.getHeaders() });
   }
 
+  getTweetsByUser(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user`, { headers: this.getHeaders() });
+  }
+
   followUser(userId: string): Observable<any> {
-    return this.http.post(`${this.followUrl}/follow/${userId}`, {}, { headers: this.getHeaders() });
+    return this.http.post(`${environment.apiUrl}/follow/follow/${userId}`, {}, { headers: this.getHeaders() });
   }
 
   unfollowUser(userId: string): Observable<any> {
-    return this.http.post(`${this.followUrl}/unfollow/${userId}`, {}, { headers: this.getHeaders() });
+    return this.http.post(`${environment.apiUrl}/follow/unfollow/${userId}`, {}, { headers: this.getHeaders() });
   }
 }

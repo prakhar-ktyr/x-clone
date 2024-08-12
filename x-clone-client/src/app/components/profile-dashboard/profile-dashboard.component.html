@@ -1,1 +1,55 @@
-<p>profile-dashboard works!</p>
+<div class="container mt-3">
+    <div class="row">
+      <div class="col-md-3 text-center">
+        <img [src]="'http://localhost:3000/' + profile.profilePicture" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+        <button class="btn btn-primary mt-3" (click)="onUpdateProfile()">Update Profile</button>
+      </div>
+      <div class="col-md-9">
+        <h3>{{ profile.name }} <small class="text-muted">@{{ profile.handle }}</small></h3>
+        <p>{{ profile.bio }}</p>
+        <p><i class="fas fa-map-marker-alt"></i> {{ profile.location }}</p>
+        <p><i class="fas fa-calendar-alt"></i> Joined {{ profile.joined | date:'MMMM yyyy' }}</p>
+        <div class="d-flex justify-content-start">
+          <span class="me-3"><strong>{{ profile.followers?.length }}</strong> Followers</span>
+          <span><strong>{{ profile.following?.length }}</strong> Following</span>
+        </div>
+      </div>
+    </div>
+  
+    <hr>
+  
+    <div class="tweets-list mt-4">
+      <h4>Tweets</h4>
+      <div *ngFor="let tweet of tweets" class="tweet my-3 p-3 border rounded">
+        <div class="tweet-author">
+          <strong>{{ profile.name }} (@{{ profile.handle }})</strong>
+          <span class="text-muted">{{ tweet.createdAt | date:'short' }}</span>
+        </div>
+        <div class="tweet-content my-2">
+          {{ tweet.content }}
+        </div>
+  
+        <!-- Display images if available -->
+        <div class="tweet-images my-2" *ngIf="tweet.images && tweet.images.length > 0">
+          <div *ngFor="let image of tweet.images">
+            <img [src]="'http://localhost:3000/' + image" alt="Tweet image" class="img-fluid rounded mb-2" />
+          </div>
+        </div>
+  
+        <!-- Display video if available -->
+        <div class="tweet-video my-2" *ngIf="tweet.video">
+          <video controls class="img-fluid rounded">
+            <source [src]="'http://localhost:3000/' + tweet.video" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+  
+        <div class="tweet-interactions d-flex justify-content-between">
+          <span><i class="fas fa-heart"></i> {{ tweet.likes.length }}</span>
+          <span><i class="fas fa-comment"></i> {{ tweet.comments.length }}</span>
+          <span><i class="fas fa-retweet"></i> {{ tweet.retweets.length }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
