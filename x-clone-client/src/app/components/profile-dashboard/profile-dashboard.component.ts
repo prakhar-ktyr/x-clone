@@ -99,6 +99,6 @@ export class ProfileDashboardComponent implements OnInit, AfterViewInit {
   }
 
   navigateToProfile(): void {
-    this.router.navigate(['/profile']); // Navigate to the profile update page
+    this.router.navigate(['/profile/update']); // Navigate to the profile update page
   }
 }
