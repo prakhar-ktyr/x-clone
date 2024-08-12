@@ -47,14 +47,29 @@ router.post('/', auth, upload.fields([{ name: 'images', maxCount: 5 }, { name: '
 });
 
 // READ: Get all tweets
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
+    const currentUserId = req.user.id; // Get the current user's ID
+
     const tweets = await Tweet.find()
-      .populate('author', 'name handle')
+      .populate('author', 'name handle followers')
       .populate('comments')
       .populate('likes')
       .populate('retweets');
-    res.json(tweets);
+
+    // Add an isFollowing field to each author object
+    const tweetsWithFollowInfo = tweets.map(tweet => {
+      const isFollowing = tweet.author.followers.some(followerId => followerId.toString() === currentUserId);
+      return {
+        ...tweet._doc,
+        author: {
+          ...tweet.author._doc,
+          isFollowing: isFollowing
+        }
+      };
+    });
+
+    res.json(tweetsWithFollowInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
