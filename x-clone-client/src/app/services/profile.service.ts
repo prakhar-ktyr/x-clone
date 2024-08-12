@@ -19,14 +19,22 @@ export class ProfileService {
     });
   }
 
+  // Fetch the authenticated user's profile
   getProfile(): Observable<any> {
     return this.http.get(`${this.apiUrl}/me`, { headers: this.getHeaders() });
   }
 
+  // Fetch a user's profile by their ID
+  getUserProfile(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${userId}`, { headers: this.getHeaders() });
+  }
+
+  // Update the authenticated user's profile
   updateProfile(profileData: any): Observable<any> {
     return this.http.put(this.apiUrl, profileData, { headers: this.getHeaders() });
   }
 
+  // Upload a new profile picture
   uploadProfilePicture(formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/upload-profile-picture`, formData, { headers: this.getHeaders() });
   }

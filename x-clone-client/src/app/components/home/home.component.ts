@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { TweetService } from 'src/app/services/tweet.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
-  constructor(private tweetService: TweetService, private authService: AuthService) {}
+  constructor(private tweetService: TweetService, private authService: AuthService, private router: Router,) {}
 
   ngOnInit(): void {
     this.fetchTweets();
@@ -132,5 +133,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       );
     }
+  }
+  navigateToUserProfile(userId: string): void {
+    this.router.navigate(['/profile-view', userId]);
   }
 }

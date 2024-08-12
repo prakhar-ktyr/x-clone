@@ -21,6 +21,7 @@ import { ProfilePictureUploadComponent } from './components/profile-picture-uplo
 import { TweetService } from './services/tweet.service';
 import { DashboardLayoutComponent } from './components/dashboard-layout/dashboard-layout.component';
 import { ProfileDashboardComponent } from './components/profile-dashboard/profile-dashboard.component';
+import { ProfileViewComponent } from './components/profile-view/profile-view.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ProfileDashboardComponent } from './components/profile-dashboard/profil
     ProfileSetupComponent,
     ProfilePictureUploadComponent,
     DashboardLayoutComponent,
-    ProfileDashboardComponent
+    ProfileDashboardComponent,
+    ProfileViewComponent
   ],
   imports: [
     BrowserModule,

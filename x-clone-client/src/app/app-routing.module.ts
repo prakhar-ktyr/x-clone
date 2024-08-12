@@ -10,6 +10,7 @@ import { ProfilePictureUploadComponent } from './components/profile-picture-uplo
 import { DashboardLayoutComponent } from './components/dashboard-layout/dashboard-layout.component';
 import { ProfileDashboardComponent } from './components/profile-dashboard/profile-dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';  // Import ProfileComponent
+import { ProfileViewComponent } from './components/profile-view/profile-view.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -24,7 +25,8 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent }, // Home Page
       { path: 'profile', component: ProfileDashboardComponent }, // Profile Dashboard
-      { path: 'profile/update', component: ProfileComponent } // Profile Update
+      { path: 'profile/update', component: ProfileComponent }, // Profile Update
+      { path: 'profile-view/:id', component: ProfileViewComponent }
       // Add more routes as needed
     ],
   },

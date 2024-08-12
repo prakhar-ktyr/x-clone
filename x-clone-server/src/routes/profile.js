@@ -58,10 +58,10 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
-// Get user profile by handle
-router.get('/:handle', async (req, res) => {
+// Get user profile by ID
+router.get('/:id', async (req, res) => {
   try {
-    const user = await User.findOne({ handle: req.params.handle }).select('-password');
+    const user = await User.findById(req.params.id).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
