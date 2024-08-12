@@ -52,7 +52,7 @@ router.get('/', auth, async (req, res) => {
     const currentUserId = req.user.id; // Get the current user's ID
 
     const tweets = await Tweet.find()
-      .populate('author', 'name handle followers')
+      .populate('author', 'name handle followers profilePicture')
       .populate('comments')
       .populate('likes')
       .populate('retweets');
