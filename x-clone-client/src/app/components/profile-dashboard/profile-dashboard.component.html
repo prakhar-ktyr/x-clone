@@ -2,7 +2,7 @@
     <div class="row">
       <div class="col-md-3 text-center">
         <img [src]="'http://localhost:3000/' + profile.profilePicture" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
-        <button class="btn btn-primary mt-3" (click)="onUpdateProfile()">Update Profile</button>
+        <button class="btn btn-primary mt-3" (click)="navigateToProfile()">Update Profile</button>
       </div>
       <div class="col-md-9">
         <h3>{{ profile.name }} <small class="text-muted">@{{ profile.handle }}</small></h3>

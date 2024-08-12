@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProfileService } from 'src/app/services/profile.service';
 import { TweetService } from 'src/app/services/tweet.service';
 
@@ -13,7 +14,11 @@ export class ProfileDashboardComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
-  constructor(private profileService: ProfileService, private tweetService: TweetService) {}
+  constructor(
+    private profileService: ProfileService,
+    private tweetService: TweetService,
+    private router: Router // Inject Router service
+  ) {}
 
   ngOnInit(): void {
     this.loadProfile();
@@ -91,5 +96,9 @@ export class ProfileDashboardComponent implements OnInit, AfterViewInit {
         }
       );
     }
+  }
+
+  navigateToProfile(): void {
+    this.router.navigate(['/profile']); // Navigate to the profile update page
   }
 }

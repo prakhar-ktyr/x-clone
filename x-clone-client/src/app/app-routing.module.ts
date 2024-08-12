@@ -9,6 +9,7 @@ import { ProfileSetupComponent } from './components/profile-setup/profile-setup.
 import { ProfilePictureUploadComponent } from './components/profile-picture-upload/profile-picture-upload.component';
 import { DashboardLayoutComponent } from './components/dashboard-layout/dashboard-layout.component';
 import { ProfileDashboardComponent } from './components/profile-dashboard/profile-dashboard.component';
+import { ProfileComponent } from './components/profile/profile.component';  // Import ProfileComponent
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -19,17 +20,16 @@ const routes: Routes = [
   {
     path: '',
     component: DashboardLayoutComponent, // Layout with left/right panels
+    canActivate: [AuthGuard], // Protecting dashboard routes with AuthGuard
     children: [
       { path: 'home', component: HomeComponent }, // Home Page
-      { path: 'profile', component: ProfileDashboardComponent }
+      { path: 'profile', component: ProfileDashboardComponent }, // Profile Dashboard
+      { path: 'profile/update', component: ProfileComponent } // Profile Update
       // Add more routes as needed
     ],
   },
   { path: '**', redirectTo: '' }, // Redirect for unmatched routes
 ];
-
-
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
