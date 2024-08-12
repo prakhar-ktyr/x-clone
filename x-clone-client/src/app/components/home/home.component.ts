@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
-  constructor(private tweetService: TweetService, private authService: AuthService) { }
+  constructor(private tweetService: TweetService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.fetchTweets();
@@ -44,24 +44,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const formData = new FormData();
       formData.append('content', this.tweetContent);
 
-      // Append images
       this.selectedImages.forEach((image) => {
         formData.append('images', image, image.name);
       });
 
-      // Append video
       if (this.selectedVideo) {
         formData.append('video', this.selectedVideo, this.selectedVideo.name);
       }
 
       this.tweetService.createTweet(formData).subscribe(
         response => {
-          console.log('Tweet created:', response);
-          this.tweetContent = ''; // Clear the textarea after posting
-          this.selectedImages = []; // Clear selected images
-          this.selectedVideo = null; // Clear selected video
-          this.updateCharacterCount(); // Reset the character count
-          this.fetchTweets(); // Refresh the tweets list
+          this.tweetContent = '';
+          this.selectedImages = [];
+          this.selectedVideo = null;
+          this.updateCharacterCount();
+          this.fetchTweets();
         },
         error => {
           console.error('Error creating tweet:', error);
@@ -88,8 +85,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   calculateTweetScore(tweet: any): number {
     const likesScore = tweet.likes.length * 5;
     const commentsScore = tweet.comments.length * 10;
-    const timeSinceCreated = (Date.now() - new Date(tweet.createdAt).getTime()) / (1000 * 60); // in minutes
-    const recencyScore = timeSinceCreated < 1440 ? 1000 - timeSinceCreated : 0; // 1440 minutes = 24 hours
+    const timeSinceCreated = (Date.now() - new Date(tweet.createdAt).getTime()) / (1000 * 60);
+    const recencyScore = timeSinceCreated < 1440 ? 1000 - timeSinceCreated : 0;
 
     return likesScore + commentsScore + recencyScore;
   }
@@ -105,7 +102,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       });
     }, {
-      threshold: 0.5 // Play the video when at least 50% of it is visible
+      threshold: 0.5
     });
 
     this.videoElements.changes.subscribe((videos: QueryList<ElementRef>) => {
@@ -113,5 +110,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
         observer.observe(videoElement.nativeElement);
       });
     });
+  }
+
+  toggleFollow(userId: string, isFollowing: boolean): void {
+    if (isFollowing) {
+      this.tweetService.unfollowUser(userId).subscribe(
+        () => {
+          this.fetchTweets(); // Refresh the tweets list
+        },
+        error => {
+          console.error('Error unfollowing user:', error);
+        }
+      );
+    } else {
+      this.tweetService.followUser(userId).subscribe(
+        () => {
+          this.fetchTweets(); // Refresh the tweets list
+        },
+        error => {
+          console.error('Error following user:', error);
+        }
+      );
+    }
   }
 }
