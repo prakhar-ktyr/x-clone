@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { TweetService } from 'src/app/services/tweet.service';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -7,18 +7,24 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   tweetContent: string = '';
   maxCharacters: number = 280;
   charactersRemaining: number = this.maxCharacters;
   selectedImages: File[] = [];
   selectedVideo: File | null = null;
-  tweets: any[] = []; // Declare the 'tweets' property here
+  tweets: any[] = [];
+
+  @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
   constructor(private tweetService: TweetService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.fetchTweets(); // Fetch tweets when the component initializes
+    this.fetchTweets();
+  }
+
+  ngAfterViewInit(): void {
+    this.setupIntersectionObserver();
   }
 
   updateCharacterCount(): void {
@@ -37,12 +43,12 @@ export class HomeComponent implements OnInit {
     if (this.tweetContent.trim() && this.charactersRemaining >= 0) {
       const formData = new FormData();
       formData.append('content', this.tweetContent);
-      
+
       // Append images
-      this.selectedImages.forEach((image, index) => {
+      this.selectedImages.forEach((image) => {
         formData.append('images', image, image.name);
       });
-      
+
       // Append video
       if (this.selectedVideo) {
         formData.append('video', this.selectedVideo, this.selectedVideo.name);
@@ -67,7 +73,7 @@ export class HomeComponent implements OnInit {
   fetchTweets(): void {
     this.tweetService.getTweets().subscribe(
       tweets => {
-        this.tweets = this.sortTweets(tweets); // Store the fetched tweets
+        this.tweets = this.sortTweets(tweets);
       },
       error => {
         console.error('Error fetching tweets:', error);
@@ -86,5 +92,26 @@ export class HomeComponent implements OnInit {
     const recencyScore = timeSinceCreated < 1440 ? 1000 - timeSinceCreated : 0; // 1440 minutes = 24 hours
 
     return likesScore + commentsScore + recencyScore;
+  }
+
+  setupIntersectionObserver(): void {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const video: HTMLVideoElement = entry.target as HTMLVideoElement;
+        if (entry.isIntersecting) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      });
+    }, {
+      threshold: 0.5 // Play the video when at least 50% of it is visible
+    });
+
+    this.videoElements.changes.subscribe((videos: QueryList<ElementRef>) => {
+      videos.forEach(videoElement => {
+        observer.observe(videoElement.nativeElement);
+      });
+    });
   }
 }
