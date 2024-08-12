@@ -4,7 +4,7 @@ import { ProfileService } from 'src/app/services/profile.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-profile-update',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })

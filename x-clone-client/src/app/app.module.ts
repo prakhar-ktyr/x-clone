@@ -15,11 +15,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { HomeComponent } from './components/home/home.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileComponent } from './components/profile-update/profile.component';
 import { ProfileSetupComponent } from './components/profile-setup/profile-setup.component';
 import { ProfilePictureUploadComponent } from './components/profile-picture-upload/profile-picture-upload.component';
 import { TweetService } from './services/tweet.service';
 import { DashboardLayoutComponent } from './components/dashboard-layout/dashboard-layout.component';
+import { ProfileDashboardComponent } from './components/profile-dashboard/profile-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { DashboardLayoutComponent } from './components/dashboard-layout/dashboar
     ProfileComponent,
     ProfileSetupComponent,
     ProfilePictureUploadComponent,
-    DashboardLayoutComponent
+    DashboardLayoutComponent,
+    ProfileDashboardComponent
   ],
   imports: [
     BrowserModule,
