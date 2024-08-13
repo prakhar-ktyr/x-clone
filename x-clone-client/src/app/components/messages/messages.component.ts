@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
@@ -20,7 +20,8 @@ export class MessagesComponent implements OnInit {
     private socketService: SocketService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -85,12 +86,20 @@ export class MessagesComponent implements OnInit {
   }
 
   loadChatHistory(): void {
-    // Logic to load chat history with previous users
-    // For example, you could load users you've previously chatted with
+    this.messageService.getChatUsers().subscribe(
+      chatHistory => {
+        this.chatHistory = chatHistory;
+      },
+      error => {
+        console.error('Error loading chat history:', error);
+      }
+    );
   }
 
   selectChat(userId: string): void {
-    this.userId = userId;
-    this.loadMessages(); // Load messages for the selected user
+    this.router.navigate(['/messages', { userId }]).then(() => {
+      this.userId = userId;
+      this.loadMessages(); // Load messages for the selected user
+    });
   }
 }

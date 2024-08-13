@@ -5,7 +5,7 @@
         <h5>Chat History</h5>
         <ul class="list-group">
           <li *ngFor="let chat of chatHistory" class="list-group-item" (click)="selectChat(chat.userId)">
-            <img [src]="chat.profilePicture" alt="User Image" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+            <img [src]="'http://localhost:3000/' + chat.profilePicture" alt="User Image" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
             {{ chat.name }}
           </li>
         </ul>

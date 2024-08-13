@@ -24,6 +24,11 @@ export class MessageService {
     return this.http.get(`${this.apiUrl}/${userId}`, { headers: this.getHeaders() });
   }
 
+  // Fetch the list of users with whom the logged-in user has chat history
+  getChatUsers(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/history`, { headers: this.getHeaders() });
+  }
+
   // Send a new message
   sendMessage(receiver: string, content: string): Observable<any> {
     return this.http.post(this.apiUrl, { receiver, content }, { headers: this.getHeaders() });
