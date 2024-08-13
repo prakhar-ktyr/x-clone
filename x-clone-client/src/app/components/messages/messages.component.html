@@ -1,30 +1,60 @@
 <div class="container mt-3">
     <div class="row">
       <!-- Chat History / Previous Users -->
-      <div class="col-md-3">
-        <h5>Chat History</h5>
+      <div class="col-md-4">
+        <h4 class="chat-history-heading">Chat History</h4>
         <ul class="list-group">
-          <li *ngFor="let chat of chatHistory" class="list-group-item" (click)="selectChat(chat.userId)">
-            <img [src]="'http://localhost:3000/' + chat.profilePicture" alt="User Image" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+          <li 
+            *ngFor="let chat of chatHistory" 
+            class="list-group-item chat-history-item" 
+            [class.active]="chat.userId === userId"
+            (click)="selectChat(chat.userId)"
+          >
+            <img 
+              [src]="'http://localhost:3000/' + chat.profilePicture" 
+              alt="User Image" 
+              class="rounded-circle" 
+              style="width: 50px; height: 50px; margin-right: 10px;"
+            >
             {{ chat.name }}
           </li>
         </ul>
       </div>
   
       <!-- Chat Window -->
-      <div class="col-md-9">
-        <h5>Chat with {{ userId }}</h5>
+      <div class="col-md-8">
+        <div class="chat-header d-flex align-items-center mb-3">
+          <img 
+            [src]="'http://localhost:3000/' + selectedChatUser?.profilePicture" 
+            alt="User Image" 
+            class="rounded-circle" 
+            style="width: 50px; height: 50px; margin-right: 10px;"
+          >
+          <h5 class="mb-0">{{ selectedChatUser?.name }}</h5>
+        </div>
+  
         <div class="chat-window">
-          <div *ngFor="let message of messages" class="message">
-            <strong>{{ message.sender === loggedInUserId ? 'You' : 'Other' }}:</strong> 
+          <div *ngFor="let message of messages" class="message my-2">
+            <strong>{{ message.sender === loggedInUserId ? 'You' : selectedChatUser?.name }}:</strong> 
             {{ message.content }}
           </div>
         </div>
   
         <!-- Input to send a new message -->
         <div class="input-group mt-3">
-          <input type="text" class="form-control" [(ngModel)]="messageContent" placeholder="Type a message...">
-          <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="messageContent" 
+            placeholder="Type a message..."
+          >
+          <button 
+            class="btn btn-primary" 
+            (click)="sendMessage()" 
+            style="background-color: #1DA1F2; border-color: #1DA1F2;"
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>

@@ -15,6 +15,7 @@ export class MessagesComponent implements OnInit {
   messages: any[] = [];
   messageContent: string = '';
   chatHistory: any[] = []; // Stores previous chat users
+  selectedChatUser: any; // Stores the selected chat user's details
 
   constructor(
     private socketService: SocketService,
@@ -34,6 +35,7 @@ export class MessagesComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.userId = params['userId'];
       this.loadMessages();
+      this.setSelectedChatUser();
     });
 
     // Listen for incoming messages
@@ -89,6 +91,7 @@ export class MessagesComponent implements OnInit {
     this.messageService.getChatUsers().subscribe(
       chatHistory => {
         this.chatHistory = chatHistory;
+        this.setSelectedChatUser();
       },
       error => {
         console.error('Error loading chat history:', error);
@@ -96,9 +99,14 @@ export class MessagesComponent implements OnInit {
     );
   }
 
+  setSelectedChatUser(): void {
+    this.selectedChatUser = this.chatHistory.find(chat => chat.userId === this.userId);
+  }
+
   selectChat(userId: string): void {
     this.router.navigate(['/messages', { userId }]).then(() => {
       this.userId = userId;
+      this.setSelectedChatUser();
       this.loadMessages(); // Load messages for the selected user
     });
   }

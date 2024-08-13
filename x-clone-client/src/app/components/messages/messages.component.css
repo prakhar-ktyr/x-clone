@@ -1,0 +1,57 @@
+.chat-history-heading {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .chat-history-item {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s ease;
+  }
+  
+  .chat-history-item:hover, 
+  .chat-history-item.active {
+    background-color: #f1f1f1;
+    border-left: 5px solid #1DA1F2;
+  }
+  
+  .chat-history-item.active {
+    color: inherit; /* Ensures text color remains visible */
+  }
+  
+  .chat-header {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .chat-header h5 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .chat-window {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .message {
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .message strong {
+    font-weight: 600;
+  }
+  
+  .input-group button {
+    background-color: #1DA1F2;
+    border-color: #1DA1F2;
+    color: white;
+  }
+  
