@@ -58,20 +58,36 @@ const io = new Server(server, {
   }
 });
 
+// Store active users
+let activeUsers = new Map();
+
 // Socket.io connection handler
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
 
-  // Listen for a message event
-  socket.on('message', (data) => {
-    console.log('Message received:', data);
-    // Broadcast the message to all connected clients
-    io.emit('message', data);
+  // Handle user joining with their ID
+  socket.on('joinRoom', (userId) => {
+    activeUsers.set(userId, socket.id);
+    console.log(`User ${userId} connected with socket ID ${socket.id}`);
+  });
+
+  // Listen for the sendMessage event
+  socket.on('sendMessage', (message) => {
+    const receiverSocketId = activeUsers.get(message.receiver);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit('receiveMessage', message);
+    }
   });
 
   // Handle disconnection
   socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
+    for (let [userId, socketId] of activeUsers.entries()) {
+      if (socketId === socket.id) {
+        activeUsers.delete(userId);
+        console.log(`User ${userId} disconnected`);
+        break;
+      }
+    }
   });
 });
 

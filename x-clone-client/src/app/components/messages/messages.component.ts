@@ -26,6 +26,9 @@ export class MessagesComponent implements OnInit {
   ngOnInit(): void {
     this.loggedInUserId = this.authService.getUser().id;
 
+    // Join the room for real-time communication
+    this.socketService.emit('joinRoom', this.loggedInUserId);
+
     // Extract userId from route parameters
     this.route.params.subscribe(params => {
       this.userId = params['userId'];
@@ -61,16 +64,16 @@ export class MessagesComponent implements OnInit {
         receiver: this.userId,
         content: this.messageContent
       };
-  
+
       // Save the message to the database
       this.messageService.sendMessage(this.userId, this.messageContent).subscribe(
         savedMessage => {
           // Emit the saved message to the socket server
           this.socketService.emit('sendMessage', savedMessage);
-  
-          // Add the saved message to the local list (optimistic UI update)
+
+          // Add the message to the local list (optimistic UI update)
           this.messages.push(savedMessage);
-  
+
           // Clear the input field
           this.messageContent = '';
         },
@@ -80,7 +83,6 @@ export class MessagesComponent implements OnInit {
       );
     }
   }
-  
 
   loadChatHistory(): void {
     // Logic to load chat history with previous users
