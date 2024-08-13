@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ElementRef, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ProfileService } from 'src/app/services/profile.service';
 import { TweetService } from 'src/app/services/tweet.service';
 
@@ -17,7 +17,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit {
   constructor(
     private profileService: ProfileService,
     private tweetService: TweetService,
-    private route: ActivatedRoute
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -29,7 +29,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit {
   }
 
   loadProfileAndTweets(): void {
-    const userId = this.route.snapshot.paramMap.get('id');
+    const userId = this.router.url.split('/').pop(); // Extract userId from URL
+
     if (userId) {
       this.profileService.getUserProfile(userId).subscribe(
         data => {
@@ -74,5 +75,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit {
         observer.observe(videoElement.nativeElement);
       });
     });
+  }
+
+  startChat(userId: string): void {
+    this.router.navigate(['/messages', { userId }]);
   }
 }

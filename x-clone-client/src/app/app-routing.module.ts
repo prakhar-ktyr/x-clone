@@ -11,6 +11,7 @@ import { DashboardLayoutComponent } from './components/dashboard-layout/dashboar
 import { ProfileDashboardComponent } from './components/profile-dashboard/profile-dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';  // Import ProfileComponent
 import { ProfileViewComponent } from './components/profile-view/profile-view.component';
+import { MessagesComponent } from './components/messages/messages.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -26,7 +27,8 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent }, // Home Page
       { path: 'profile', component: ProfileDashboardComponent }, // Profile Dashboard
       { path: 'profile/update', component: ProfileComponent }, // Profile Update
-      { path: 'profile-view/:id', component: ProfileViewComponent }
+      { path: 'profile-view/:id', component: ProfileViewComponent },
+      { path: 'messages', component: MessagesComponent }
       // Add more routes as needed
     ],
   },

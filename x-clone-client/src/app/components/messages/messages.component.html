@@ -1,0 +1,32 @@
+<div class="container mt-3">
+    <div class="row">
+      <!-- Chat History / Previous Users -->
+      <div class="col-md-3">
+        <h5>Chat History</h5>
+        <ul class="list-group">
+          <li *ngFor="let chat of chatHistory" class="list-group-item" (click)="selectChat(chat.userId)">
+            <img [src]="chat.profilePicture" alt="User Image" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+            {{ chat.name }}
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Chat Window -->
+      <div class="col-md-9">
+        <h5>Chat with {{ userId }}</h5>
+        <div class="chat-window">
+          <div *ngFor="let message of messages" class="message">
+            <strong>{{ message.sender === loggedInUserId ? 'You' : 'Other' }}:</strong> 
+            {{ message.content }}
+          </div>
+        </div>
+  
+        <!-- Input to send a new message -->
+        <div class="input-group mt-3">
+          <input type="text" class="form-control" [(ngModel)]="messageContent" placeholder="Type a message...">
+          <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

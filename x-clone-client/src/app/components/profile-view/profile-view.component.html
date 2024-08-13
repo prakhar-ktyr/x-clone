@@ -2,7 +2,6 @@
     <div class="row">
       <div class="col-md-3 text-center">
         <img [src]="'http://localhost:3000/' + profile.profilePicture" alt="Profile Picture" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
-        <!-- No update profile button for other user's profiles -->
       </div>
       <div class="col-md-9">
         <h3>{{ profile.name }} <small class="text-muted">@{{ profile.handle }}</small></h3>
@@ -17,6 +16,8 @@
           <span class="me-3"><strong>{{ profile.followers?.length }}</strong> Followers</span>
           <span><strong>{{ profile.following?.length }}</strong> Following</span>
         </div>
+        <!-- DM Button -->
+        <button class="btn btn-outline-primary mt-3" (click)="startChat(profile._id)">DM</button>
       </div>
     </div>
   
