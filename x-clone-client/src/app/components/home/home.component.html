@@ -73,10 +73,13 @@
         </div>
 
         <div class="tweet-interactions d-flex justify-content-between">
-          <span><i class="fas fa-heart"></i> {{ tweet.likes.length }}</span>
+          <span (click)="toggleLike(tweet)" [class.text-danger]="tweet.isLiked">
+            <i class="fas fa-heart"></i> {{ tweet.likes.length }}
+          </span>
           <span><i class="fas fa-comment"></i> {{ tweet.comments.length }}</span>
           <span><i class="fas fa-retweet"></i> {{ tweet.retweets.length }}</span>
         </div>
+        
       </div>
     </div>
   </div>

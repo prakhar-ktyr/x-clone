@@ -42,4 +42,12 @@ export class TweetService {
   unfollowUser(userId: string): Observable<any> {
     return this.http.post(`${environment.apiUrl}/follow/unfollow/${userId}`, {}, { headers: this.getHeaders() });
   }
+
+  likeTweet(tweetId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/like/${tweetId}`, {}, { headers: this.getHeaders() });
+  }
+
+  unlikeTweet(tweetId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/unlike/${tweetId}`, {}, { headers: this.getHeaders() });
+  }
 }

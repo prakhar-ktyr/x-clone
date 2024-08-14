@@ -134,6 +134,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
       );
     }
   }
+
+  toggleLike(tweet: any): void {
+    if (tweet.isLiked) {
+      this.tweetService.unlikeTweet(tweet._id).subscribe(
+        () => {
+          tweet.isLiked = false;
+          tweet.likes = tweet.likes.filter((id: string) => id !== this.authService.getUser().id);
+        },
+        error => {
+          console.error('Error unliking tweet:', error);
+        }
+      );
+    } else {
+      this.tweetService.likeTweet(tweet._id).subscribe(
+        () => {
+          tweet.isLiked = true;
+          tweet.likes.push(this.authService.getUser().id);
+        },
+        error => {
+          console.error('Error liking tweet:', error);
+        }
+      );
+    }
+  }
+
   navigateToUserProfile(userId: string): void {
     this.router.navigate(['/profile-view', userId]);
   }
