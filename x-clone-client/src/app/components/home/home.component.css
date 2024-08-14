@@ -3,6 +3,39 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Tabs Styling */
+.tabs-container {
+  background-color: white;
+  border-bottom: 1px solid #e1e8ed;
+  margin-bottom: 1rem;
+}
+
+.nav-tabs {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-tabs .nav-link {
+  color: #536471;
+  font-weight: bold;
+  padding: 1rem;
+  margin-bottom: -1px;
+  border: none;
+  transition: color 0.2s ease;
+}
+
+.nav-tabs .nav-link.active {
+  color: #1DA1F2;
+  border-bottom: 3px solid #1DA1F2;
+}
+
+.tab-content {
+  border-top: none;
+  padding-top: 1rem;
+}
+
+/* Tweet Box Styling */
 .tweet-box textarea {
   width: 100%;
   border: 1px solid #e1e8ed;
@@ -13,20 +46,8 @@ body {
 
 .tweet-box .btn {
   border-radius: 25px;
-  padding: 10px 20px; /* Adjust padding for better alignment */
-}
-
-.tab-content {
-  border-top: 1px solid #e1e8ed;
-}
-
-.nav-tabs .nav-link {
-  color: #1DA1F2;
-}
-
-.nav-tabs .nav-link.active {
-  color: #000;
-  font-weight: bold;
+  padding: 10px 20px;
+  background-color: #1DA1F2;
   border: none;
 }
 
@@ -34,13 +55,48 @@ body {
   padding: 20px 0;
 }
 
-/* Responsive styling specific to the tweet box and tab content */
+/* Tweet Styling */
+.tweet {
+  background-color: white;
+  border: 1px solid #e1e8ed;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.tweet-author img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.tweet-author div {
+  display: flex;
+  flex-direction: column;
+}
+
+.tweet-content {
+  margin-top: 10px;
+}
+
+.tweet-images img,
+.tweet-video video {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.tweet-interactions span {
+  font-size: 14px;
+  color: #536471;
+}
+
+/* Responsive styling */
 @media (max-width: 768px) {
   .tweet-box textarea {
     width: 90%;
   }
 
   .tab-content {
-    padding-left: 60px; /* Ensure tabs align properly */
+    padding-left: 10px;
   }
 }
