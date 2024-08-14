@@ -1,20 +1,32 @@
+<!-- Tabs for "For You" and "Following" -->
+<ul class="nav nav-tabs" id="homeTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a class="nav-link active" id="for-you-tab" data-bs-toggle="tab" href="#for-you" role="tab" aria-controls="for-you" aria-selected="true">For You</a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" id="following-tab" data-bs-toggle="tab" href="#following" role="tab" aria-controls="following" aria-selected="false">Following</a>
+  </li>
+</ul>
+
+<!-- Tab content -->
 <div class="tab-content px-3" id="homeTabContent">
   <div class="tab-pane fade show active" id="for-you" role="tabpanel" aria-labelledby="for-you-tab">
+    <!-- For You tab content -->
     <div class="tweet-box my-3">
       <textarea class="form-control" rows="3" placeholder="What is happening?!" [(ngModel)]="tweetContent" (input)="updateCharacterCount()"></textarea>
-      
+
       <!-- File input for images -->
       <input type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*" class="form-control mt-2" />
-    
+
       <!-- File input for video -->
       <input type="file" (change)="onFileChange($event, 'video')" accept="video/*" class="form-control mt-2" />
-    
+
       <div class="d-flex justify-content-between align-items-center mt-2">
         <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining</span>
         <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
       </div>
     </div>
-    
+
     <div class="tweets-list">
       <div *ngFor="let tweet of tweets" class="tweet my-3 p-3 border rounded">
         <div class="d-flex justify-content-between align-items-center">
@@ -27,7 +39,7 @@
               style="width: 40px; height: 40px; margin-right: 10px; cursor: pointer;"
               (click)="navigateToUserProfile(tweet.author._id)"
             />
-            
+
             <!-- Author Name and Handle -->
             <div>
               <strong>{{ tweet.author.name }} (@{{ tweet.author.handle }}) </strong>
@@ -38,22 +50,18 @@
             {{ tweet.author.isFollowing ? 'Unfollow' : 'Follow' }}
           </button>
         </div>
-        
+
         <div class="tweet-content my-2">
           {{ tweet.content }}
         </div>
-    
+
         <!-- Display images if available -->
         <div class="tweet-images my-2" *ngIf="tweet.images && tweet.images.length > 0">
           <div *ngFor="let image of tweet.images">
-            <img
-              [src]="'http://localhost:3000/' + image"
-              alt="Tweet image"
-              class="img-fluid rounded mb-2"
-            />
+            <img [src]="'http://localhost:3000/' + image" alt="Tweet image" class="img-fluid rounded mb-2" />
           </div>
         </div>
-    
+
         <!-- Display video if available -->
         <div class="tweet-video my-2" *ngIf="tweet.video">
           <video #videoElement controls loop muted class="img-fluid rounded">
@@ -61,7 +69,7 @@
             Your browser does not support the video tag.
           </video>
         </div>
-    
+
         <div class="tweet-interactions d-flex justify-content-between">
           <span><i class="fas fa-heart"></i> {{ tweet.likes.length }}</span>
           <span><i class="fas fa-comment"></i> {{ tweet.comments.length }}</span>
@@ -69,17 +77,19 @@
         </div>
       </div>
     </div>
-        
   </div>
-  
+
   <div class="tab-pane fade" id="following" role="tabpanel" aria-labelledby="following-tab">
-    <!-- Following content -->
+    <!-- Following tab content -->
     <div class="tweet-box my-3">
       <textarea class="form-control" rows="3" placeholder="What is happening?!" [(ngModel)]="tweetContent" (input)="updateCharacterCount()"></textarea>
       <div class="d-flex justify-content-between align-items-center mt-2">
         <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining</span>
-        <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0">Tweet</button>
+        <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
       </div>
     </div>
+
+    <!-- Display the tweets for the following tab here -->
+    <!-- You will need to implement a method to fetch only the tweets from users the logged-in user follows -->
   </div>
 </div>
