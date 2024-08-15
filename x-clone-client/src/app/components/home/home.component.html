@@ -44,7 +44,7 @@
 
             <!-- Author Name and Handle -->
             <div>
-              <strong>{{ tweet.author.name }} (@{{ tweet.author.handle }}) </strong>
+              <strong (click)="navigateToUserProfile(tweet.author._id)" style="cursor: pointer;" >{{ tweet.author.name }} (@{{ tweet.author.handle }}) </strong>
               <span class="text-muted">{{ tweet.createdAt | date:'short' }}</span>
             </div>
           </div>
@@ -78,7 +78,7 @@
           </span>
           <span><i class="fas fa-comment"></i> {{ tweet.comments.length }}</span>
           <span><i class="fas fa-retweet"></i> {{ tweet.retweets.length }}</span>
-        </div>
+        </div>        
         
       </div>
     </div>

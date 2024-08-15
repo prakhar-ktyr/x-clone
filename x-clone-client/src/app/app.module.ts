@@ -23,6 +23,7 @@ import { DashboardLayoutComponent } from './components/dashboard-layout/dashboar
 import { ProfileDashboardComponent } from './components/profile-dashboard/profile-dashboard.component';
 import { ProfileViewComponent } from './components/profile-view/profile-view.component';
 import { MessagesComponent } from './components/messages/messages.component';
+import { CommentViewComponent } from './components/comment-view/comment-view.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { MessagesComponent } from './components/messages/messages.component';
     DashboardLayoutComponent,
     ProfileDashboardComponent,
     ProfileViewComponent,
-    MessagesComponent
+    MessagesComponent,
+    CommentViewComponent
   ],
   imports: [
     BrowserModule,

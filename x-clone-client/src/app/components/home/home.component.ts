@@ -71,13 +71,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   fetchTweets(): void {
     this.tweetService.getTweets().subscribe(
       tweets => {
-        this.tweets = this.sortTweets(tweets);
+        console.log(tweets);  // Log the tweets to see if isLiked is correctly set
+        this.tweets = tweets;
       },
       error => {
         console.error('Error fetching tweets:', error);
       }
     );
   }
+  
 
   sortTweets(tweets: any[]): any[] {
     return tweets.sort((a, b) => this.calculateTweetScore(b) - this.calculateTweetScore(a));
@@ -138,9 +140,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   toggleLike(tweet: any): void {
     if (tweet.isLiked) {
       this.tweetService.unlikeTweet(tweet._id).subscribe(
-        () => {
+        (response: any) => {
           tweet.isLiked = false;
-          tweet.likes = tweet.likes.filter((id: string) => id !== this.authService.getUser().id);
+          tweet.likes = response.tweet.likes;  // Update the likes count from the response
         },
         error => {
           console.error('Error unliking tweet:', error);
@@ -148,16 +150,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
       );
     } else {
       this.tweetService.likeTweet(tweet._id).subscribe(
-        () => {
+        (response: any) => {
           tweet.isLiked = true;
-          tweet.likes.push(this.authService.getUser().id);
+          tweet.likes = response.tweet.likes;  // Update the likes count from the response
         },
         error => {
-          console.error('Error liking tweet:', error);
+          if (error.status === 400 && error.error.message === 'Tweet already liked') {
+            tweet.isLiked = true; // Ensure the UI reflects the correct state
+            console.warn('Tweet was already liked.');
+          } else {
+            console.error('Error liking tweet:', error);
+          }
         }
       );
     }
   }
+  
+  
 
   navigateToUserProfile(userId: string): void {
     this.router.navigate(['/profile-view', userId]);

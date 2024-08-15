@@ -49,7 +49,7 @@ router.post('/', auth, upload.fields([{ name: 'images', maxCount: 5 }, { name: '
 // READ: Get all tweets
 router.get('/', auth, async (req, res) => {
   try {
-    const currentUserId = req.user.id; // Get the current user's ID
+    const currentUserId = req.user.id.toString(); // Ensure currentUserId is a string
 
     const tweets = await Tweet.find()
       .populate('author', 'name handle followers profilePicture')
@@ -57,19 +57,21 @@ router.get('/', auth, async (req, res) => {
       .populate('likes')
       .populate('retweets');
 
-    // Add an isFollowing field to each author object
-    const tweetsWithFollowInfo = tweets.map(tweet => {
+    // Add isFollowing and isLiked fields to each tweet object
+    const tweetsWithFollowAndLikeInfo = tweets.map(tweet => {
       const isFollowing = tweet.author.followers.some(followerId => followerId.toString() === currentUserId);
+      const isLiked = tweet.likes.some(like => like._id.toString() === currentUserId); // Ensure _id is compared as a string
       return {
         ...tweet._doc,
         author: {
           ...tweet.author._doc,
           isFollowing: isFollowing
-        }
+        },
+        isLiked: isLiked
       };
     });
 
-    res.json(tweetsWithFollowInfo);
+    res.json(tweetsWithFollowAndLikeInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -107,10 +109,13 @@ router.get('/user/:id', async (req, res) => {
 router.post('/like/:id', auth, async (req, res) => {
   try {
     const tweet = await Tweet.findById(req.params.id);
+    if (!tweet) {
+      return res.status(404).json({ success: false, message: 'Tweet not found' });
+    }
     if (!tweet.likes.includes(req.user.id)) {
       tweet.likes.push(req.user.id);
       await tweet.save();
-      res.status(200).json({ success: true });
+      res.status(200).json({ success: true, tweet });  // Return the updated tweet
     } else {
       res.status(400).json({ success: false, message: 'Tweet already liked' });
     }
@@ -122,9 +127,12 @@ router.post('/like/:id', auth, async (req, res) => {
 router.post('/unlike/:id', auth, async (req, res) => {
   try {
     const tweet = await Tweet.findById(req.params.id);
+    if (!tweet) {
+      return res.status(404).json({ success: false, message: 'Tweet not found' });
+    }
     tweet.likes = tweet.likes.filter(id => id.toString() !== req.user.id);
     await tweet.save();
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, tweet });  // Return the updated tweet
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
