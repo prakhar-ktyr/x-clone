@@ -35,6 +35,10 @@ export class TweetService {
     return this.http.get(`${this.apiUrl}/user/${userId}`, { headers: this.getHeaders() });
   }
 
+  getTweetById(tweetId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${tweetId}`, { headers: this.getHeaders() });
+  }
+
   followUser(userId: string): Observable<any> {
     return this.http.post(`${environment.apiUrl}/follow/follow/${userId}`, {}, { headers: this.getHeaders() });
   }

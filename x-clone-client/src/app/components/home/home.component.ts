@@ -115,6 +115,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  navigateToCommentView(tweetId: string): void {
+    this.router.navigate(['/comment-view', tweetId]);
+  }
+  
+
   toggleFollow(userId: string, isFollowing: boolean): void {
     if (isFollowing) {
       this.tweetService.unfollowUser(userId).subscribe(

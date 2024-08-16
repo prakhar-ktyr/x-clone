@@ -1,1 +1,50 @@
-<p>comment-view works!</p>
+<div class="container mt-3">
+    <div class="tweet p-3 border rounded">
+      <div class="tweet-author d-flex align-items-center">
+        <img [src]="'http://localhost:3000/' + tweet.author.profilePicture" alt="Profile Image" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+        <div>
+          <strong>{{ tweet.author.name }} (@{{ tweet.author.handle }})</strong>
+          <span class="text-muted">{{ tweet.createdAt | date:'short' }}</span>
+        </div>
+      </div>
+      <div class="tweet-content my-2">
+        {{ tweet.content }}
+      </div>
+      <!-- Display images if available -->
+      <div class="tweet-images my-2" *ngIf="tweet.images && tweet.images.length > 0">
+        <div *ngFor="let image of tweet.images">
+          <img [src]="'http://localhost:3000/' + image" alt="Tweet image" class="img-fluid rounded mb-2" />
+        </div>
+      </div>
+      <!-- Display video if available -->
+      <div class="tweet-video my-2" *ngIf="tweet.video">
+        <video controls loop muted class="img-fluid rounded">
+          <source [src]="'http://localhost:3000/' + tweet.video" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  
+    <!-- Comment Box -->
+    <div class="comment-box mt-3">
+      <textarea class="form-control" rows="3" [(ngModel)]="commentContent" placeholder="Write a comment..."></textarea>
+      <button class="btn btn-primary mt-2" style="background-color: #1DA1F2;" (click)="postComment()">Comment</button>
+    </div>
+  
+    <!-- Comments List -->
+    <div class="comments-list mt-3">
+      <div *ngFor="let comment of comments" class="comment p-2 border rounded my-2">
+        <div class="comment-author d-flex align-items-center">
+          <img [src]="'http://localhost:3000/' + comment.author.profilePicture" alt="Profile Image" class="rounded-circle" style="width: 30px; height: 30px; margin-right: 10px;">
+          <div>
+            <strong>{{ comment.author.name }} (@{{ comment.author.handle }})</strong>
+            <span class="text-muted">{{ comment.createdAt | date:'short' }}</span>
+          </div>
+        </div>
+        <div class="comment-content mt-2">
+          {{ comment.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+  

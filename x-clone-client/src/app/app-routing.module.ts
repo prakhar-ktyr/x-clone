@@ -12,6 +12,7 @@ import { ProfileDashboardComponent } from './components/profile-dashboard/profil
 import { ProfileComponent } from './components/profile/profile.component';  // Import ProfileComponent
 import { ProfileViewComponent } from './components/profile-view/profile-view.component';
 import { MessagesComponent } from './components/messages/messages.component';
+import { CommentViewComponent } from './components/comment-view/comment-view.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -28,7 +29,8 @@ const routes: Routes = [
       { path: 'profile', component: ProfileDashboardComponent }, // Profile Dashboard
       { path: 'profile/update', component: ProfileComponent }, // Profile Update
       { path: 'profile-view/:id', component: ProfileViewComponent },
-      { path: 'messages', component: MessagesComponent }
+      { path: 'messages', component: MessagesComponent },
+      { path: 'comment-view/:id', component: CommentViewComponent }
       // Add more routes as needed
     ],
   },
