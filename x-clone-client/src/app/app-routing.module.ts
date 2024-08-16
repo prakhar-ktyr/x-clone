@@ -13,6 +13,7 @@ import { ProfileComponent } from './components/profile/profile.component';  // I
 import { ProfileViewComponent } from './components/profile-view/profile-view.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { CommentViewComponent } from './components/comment-view/comment-view.component';
+import { BookmarksComponent } from './components/bookmarks/bookmarks.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -26,7 +27,8 @@ const routes: Routes = [
     canActivate: [AuthGuard], // Protecting dashboard routes with AuthGuard
     children: [
       { path: 'home', component: HomeComponent }, // Home Page
-      { path: 'profile', component: ProfileDashboardComponent }, // Profile Dashboard
+      { path: 'profile', component: ProfileDashboardComponent },
+      { path: 'bookmarks', component: BookmarksComponent },
       { path: 'profile/update', component: ProfileComponent }, // Profile Update
       { path: 'profile-view/:id', component: ProfileViewComponent },
       { path: 'messages', component: MessagesComponent },

@@ -1,1 +1,68 @@
-<p>bookmarks works!</p>
+<div class="container mt-3">
+    <h3>Your Bookmarks</h3>
+  
+    <div *ngIf="bookmarkedTweets.length === 0">
+      <p class="text-muted">You have no bookmarks yet.</p>
+    </div>
+  
+    <div class="tweets-list">
+      <div *ngFor="let tweet of bookmarkedTweets" class="tweet my-3 p-3 border rounded">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="tweet-author d-flex align-items-center">
+            <!-- Profile Image -->
+            <img
+              [src]="'http://localhost:3000/' + tweet.author.profilePicture"
+              alt="Profile Image"
+              class="rounded-circle"
+              style="width: 40px; height: 40px; margin-right: 10px; cursor: pointer;"
+              (click)="navigateToUserProfile(tweet.author._id)"
+            />
+      
+            <!-- Author Name and Handle -->
+            <div>
+              <strong (click)="navigateToUserProfile(tweet.author._id)" style="cursor: pointer;">
+                {{ tweet.author.name }} (@{{ tweet.author.handle }})
+              </strong>
+              <span class="text-muted">{{ tweet.createdAt | date:'short' }}</span>
+            </div>
+          </div>
+          <button
+            class="btn btn-sm follow-btn"
+            [ngClass]="tweet.author.isFollowing ? 'unfollow' : 'follow'"
+            (click)="toggleFollow(tweet.author._id, tweet.author.isFollowing)">
+            {{ tweet.author.isFollowing ? 'Unfollow' : 'Follow' }}
+          </button>
+        </div>
+    
+        <div class="tweet-content my-2">
+          {{ tweet.content }}
+        </div>
+    
+        <!-- Display images if available -->
+        <div class="tweet-images my-2" *ngIf="tweet.images && tweet.images.length > 0">
+          <div *ngFor="let image of tweet.images">
+            <img [src]="'http://localhost:3000/' + image" alt="Tweet image" class="img-fluid rounded mb-2" />
+          </div>
+        </div>
+    
+        <!-- Display video if available -->
+        <div class="tweet-video my-2" *ngIf="tweet.video">
+          <video #videoElement controls loop muted class="img-fluid rounded">
+            <source [src]="'http://localhost:3000/' + tweet.video" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+    
+        <div class="tweet-interactions d-flex justify-content-between">
+          <span (click)="toggleLike(tweet)" [class.text-danger]="tweet.isLiked">
+            <i class="fas fa-heart"></i> {{ tweet.likes.length }}
+          </span>
+          <span (click)="navigateToCommentView(tweet._id)">
+            <i class="fas fa-comment"></i> {{ tweet.comments.length }}
+          </span>
+          <span><i class="fas fa-retweet"></i> {{ tweet.retweets.length }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  

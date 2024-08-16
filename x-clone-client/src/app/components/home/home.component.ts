@@ -207,6 +207,35 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }  
   
+  toggleRetweet(tweet: any): void {
+    if (tweet.isRetweeted) {
+      this.tweetService.unretweetTweet(tweet._id).subscribe(
+        (response: any) => {
+          tweet.isRetweeted = false;
+          tweet.retweets = response.tweet.retweets;  // Update the retweets count from the response
+        },
+        error => {
+          console.error('Error unretweeting tweet:', error);
+        }
+      );
+    } else {
+      this.tweetService.retweetTweet(tweet._id).subscribe(
+        (response: any) => {
+          tweet.isRetweeted = true;
+          tweet.retweets = response.tweet.retweets;  // Update the retweets count from the response
+        },
+        error => {
+          if (error.status === 400 && error.error.message === 'Tweet already retweeted') {
+            tweet.isRetweeted = true; // Ensure the UI reflects the correct state
+            console.warn('Tweet was already retweeted.');
+          } else {
+            console.error('Error retweeting tweet:', error);
+          }
+        }
+      );
+    }
+  }
+  
 
   navigateToUserProfile(userId: string): void {
     this.router.navigate(['/profile-view', userId]);

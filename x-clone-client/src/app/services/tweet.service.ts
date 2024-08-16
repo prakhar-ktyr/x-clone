@@ -62,5 +62,17 @@ export class TweetService {
   unbookmarkTweet(tweetId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/unbookmark/${tweetId}`, {}, { headers: this.getHeaders() });
   }
+
+  getBookmarkedTweets(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/bookmarks`, { headers: this.getHeaders() });
+  }  
+
+  retweetTweet(tweetId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/retweet/${tweetId}`, {}, { headers: this.getHeaders() });
+  }
+  
+  unretweetTweet(tweetId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/unretweet/${tweetId}`, {}, { headers: this.getHeaders() });
+  }  
   
 }

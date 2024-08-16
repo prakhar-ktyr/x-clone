@@ -50,7 +50,7 @@ router.post('/', auth, upload.fields([{ name: 'images', maxCount: 5 }, { name: '
 // READ: Get all tweets with pagination
 router.get('/', auth, async (req, res) => {
   try {
-    const currentUserId = req.user.id.toString(); // Ensure currentUserId is a string
+    const currentUserId = req.user._id.toString(); // Ensure currentUserId is a string
     const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
     const limit = parseInt(req.query.limit) || 15; // Default to 15 tweets per page
 
@@ -67,13 +67,13 @@ router.get('/', auth, async (req, res) => {
     // Map bookmarks to an array of strings (tweet IDs)
     const bookmarkIds = req.user.bookmarks ? req.user.bookmarks.map(b => b._id.toString()) : [];
 
-    // Add isFollowing, isLiked, and isBookmarked fields to each tweet object
+    // Add isFollowing, isLiked, isBookmarked, and isRetweeted fields to each tweet object
     const tweetsWithInfo = tweets.map(tweet => {
       const tweetIdStr = tweet._id.toString();
       const isFollowing = tweet.author.followers.some(followerId => followerId.toString() === currentUserId);
       const isLiked = tweet.likes.some(like => like._id.toString() === currentUserId); // Ensure _id is compared as a string
       const isBookmarked = bookmarkIds.includes(tweetIdStr);  // Check if the tweet is bookmarked
-
+      const isRetweeted = tweet.retweets.some(retweetId => retweetId._id.toString() === currentUserId);  // Check if the tweet is retweeted
 
       return {
         ...tweet._doc,
@@ -82,7 +82,8 @@ router.get('/', auth, async (req, res) => {
           isFollowing: isFollowing
         },
         isLiked: isLiked,
-        isBookmarked: isBookmarked  // Include bookmark status
+        isBookmarked: isBookmarked,  // Include bookmark status
+        isRetweeted: isRetweeted  // Include retweet status
       };
     });
 
@@ -190,6 +191,66 @@ router.post('/unbookmark/:id', auth, async (req, res) => {
     user.bookmarks = user.bookmarks.filter(bookmark => bookmark.toString() !== tweet._id.toString());
     await user.save();
     res.status(200).json({ success: true, message: 'Tweet unbookmarked' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// READ: Get all bookmarked tweets by the logged-in user
+router.get('/bookmarks', auth, async (req, res) => {
+  try {
+    const user = req.user;
+
+    const tweets = await Tweet.find({
+      _id: { $in: user.bookmarks }
+    })
+      .populate('author', 'name handle followers profilePicture')
+      .populate('comments')
+      .populate('likes')
+      .populate('retweets')
+      .sort({ createdAt: -1 }); // Sort by newest tweets
+
+    res.json(tweets);
+  } catch (error) {
+    console.error('Error fetching bookmarked tweets:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/retweet/:id', auth, async (req, res) => {
+  try {
+    const tweet = await Tweet.findById(req.params.id);
+    const user = await User.findById(req.user.id);
+
+    if (!tweet || !user) {
+      return res.status(404).json({ message: 'Tweet or User not found' });
+    }
+
+    if (!tweet.retweets.includes(user._id)) {
+      tweet.retweets.push(user._id);
+      await tweet.save();
+      res.status(200).json({ success: true, tweet });
+    } else {
+      res.status(400).json({ success: false, message: 'Tweet already retweeted' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+router.post('/unretweet/:id', auth, async (req, res) => {
+  try {
+    const tweet = await Tweet.findById(req.params.id);
+    const user = await User.findById(req.user.id);
+
+    if (!tweet || !user) {
+      return res.status(404).json({ message: 'Tweet or User not found' });
+    }
+
+    tweet.retweets = tweet.retweets.filter(retweetId => retweetId.toString() !== user._id.toString());
+    await tweet.save();
+    res.status(200).json({ success: true, tweet });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
