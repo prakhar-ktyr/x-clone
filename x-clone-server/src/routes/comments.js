@@ -33,8 +33,8 @@ router.post('/:tweetId', auth, async (req, res) => {
   }
 });
 
-// READ: Get all comments for a tweet
-router.get('/:tweetId', async (req, res) => {
+/// READ: Get all comments for a tweet
+router.get('/:tweetId', auth, async (req, res) => {
   const { tweetId } = req.params;
 
   try {
@@ -42,7 +42,7 @@ router.get('/:tweetId', async (req, res) => {
       path: 'comments',
       populate: {
         path: 'author',
-        select: 'name handle'
+        select: 'name handle profilePicture' // Include profilePicture
       }
     });
 
@@ -55,6 +55,7 @@ router.get('/:tweetId', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 // UPDATE: Update a comment by ID
 router.put('/:commentId', auth, async (req, res) => {

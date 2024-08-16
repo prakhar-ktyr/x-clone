@@ -140,11 +140,31 @@ router.post('/unlike/:id', auth, async (req, res) => {
 
 
 // READ: Get a tweet by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
   try {
-    const tweet = await Tweet.findById(req.params.id).populate('author', 'name handle').populate('comments');
+    const currentUserId = req.user.id.toString(); // Ensure currentUserId is a string
+
+    const tweet = await Tweet.findById(req.params.id)
+      .populate('author', 'name handle followers profilePicture')
+      .populate('comments')
+      .populate('likes')
+      .populate('retweets');
+
     if (!tweet) return res.status(404).json({ message: 'Tweet not found' });
-    res.json(tweet);
+
+    const isFollowing = tweet.author.followers.some(followerId => followerId.toString() === currentUserId);
+    const isLiked = tweet.likes.some(like => like._id.toString() === currentUserId); // Ensure _id is compared as a string
+
+    const tweetWithFollowAndLikeInfo = {
+      ...tweet._doc,
+      author: {
+        ...tweet.author._doc,
+        isFollowing: isFollowing
+      },
+      isLiked: isLiked
+    };
+
+    res.json(tweetWithFollowAndLikeInfo);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
