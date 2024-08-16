@@ -47,15 +47,21 @@ router.post('/', auth, upload.fields([{ name: 'images', maxCount: 5 }, { name: '
 });
 
 // READ: Get all tweets
+// READ: Get all tweets with pagination
 router.get('/', auth, async (req, res) => {
   try {
     const currentUserId = req.user.id.toString(); // Ensure currentUserId is a string
+    const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+    const limit = parseInt(req.query.limit) || 15; // Default to 15 tweets per page
 
     const tweets = await Tweet.find()
       .populate('author', 'name handle followers profilePicture')
       .populate('comments')
       .populate('likes')
-      .populate('retweets');
+      .populate('retweets')
+      .sort({ createdAt: -1 }) // Sort by newest tweets
+      .skip((page - 1) * limit)
+      .limit(limit);
 
     // Add isFollowing and isLiked fields to each tweet object
     const tweetsWithFollowAndLikeInfo = tweets.map(tweet => {

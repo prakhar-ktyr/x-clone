@@ -23,8 +23,8 @@ export class TweetService {
     return this.http.post(this.apiUrl, tweetData, { headers: this.getHeaders() });
   }
 
-  getTweets(): Observable<any> {
-    return this.http.get(this.apiUrl, { headers: this.getHeaders() });
+  getTweets(page: number = 1, limit: number = 15): Observable<any> {
+    return this.http.get(`${this.apiUrl}?page=${page}&limit=${limit}`, { headers: this.getHeaders() });
   }
 
   getTweetsByUser(): Observable<any> {
@@ -33,10 +33,6 @@ export class TweetService {
 
   getTweetsByUserId(userId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/user/${userId}`, { headers: this.getHeaders() });
-  }
-
-  getTweetById(tweetId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${tweetId}`, { headers: this.getHeaders() });
   }
 
   followUser(userId: string): Observable<any> {
@@ -53,5 +49,9 @@ export class TweetService {
 
   unlikeTweet(tweetId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/unlike/${tweetId}`, {}, { headers: this.getHeaders() });
+  }
+
+  getTweetById(tweetId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${tweetId}`, { headers: this.getHeaders() });
   }
 }

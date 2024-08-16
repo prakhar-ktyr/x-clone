@@ -15,13 +15,17 @@ router.post('/:tweetId', auth, async (req, res) => {
       return res.status(404).json({ message: 'Tweet not found' });
     }
 
-    const newComment = new Comment({
+    let newComment = new Comment({
       content,
       author: req.user.id,
       tweet: tweetId
     });
 
+    // Save the comment first
     await newComment.save();
+
+    // Populate the author field after saving the comment
+    await newComment.populate('author', 'name handle profilePicture');
 
     // Add comment to tweet's comments array
     tweet.comments.push(newComment._id);

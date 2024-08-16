@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, QueryList, ViewChildren, HostListener } from '@angular/core';
 import { TweetService } from 'src/app/services/tweet.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
@@ -15,10 +15,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   selectedImages: File[] = [];
   selectedVideo: File | null = null;
   tweets: any[] = [];
+  page: number = 1; // Start from page 1
+  limit: number = 15; // Load 15 tweets per page
+  loading: boolean = false; // To prevent multiple simultaneous requests
 
   @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
-  constructor(private tweetService: TweetService, private authService: AuthService, private router: Router,) {}
+  constructor(private tweetService: TweetService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchTweets();
@@ -59,7 +62,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.selectedImages = [];
           this.selectedVideo = null;
           this.updateCharacterCount();
-          this.fetchTweets();
+          this.page = 1; // Reset to page 1
+          this.tweets = []; // Clear tweets array
+          this.fetchTweets(); // Reload tweets from the beginning
         },
         error => {
           console.error('Error creating tweet:', error);
@@ -69,29 +74,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   fetchTweets(): void {
-    this.tweetService.getTweets().subscribe(
+    if (this.loading) return;
+    this.loading = true;
+
+    this.tweetService.getTweets(this.page, this.limit).subscribe(
       tweets => {
-        console.log(tweets);  // Log the tweets to see if isLiked is correctly set
-        this.tweets = tweets;
+        this.tweets = this.tweets.concat(tweets); // Append new tweets to the list
+        this.loading = false;
       },
       error => {
         console.error('Error fetching tweets:', error);
+        this.loading = false;
       }
     );
   }
-  
 
-  sortTweets(tweets: any[]): any[] {
-    return tweets.sort((a, b) => this.calculateTweetScore(b) - this.calculateTweetScore(a));
-  }
-
-  calculateTweetScore(tweet: any): number {
-    const likesScore = tweet.likes.length * 5;
-    const commentsScore = tweet.comments.length * 10;
-    const timeSinceCreated = (Date.now() - new Date(tweet.createdAt).getTime()) / (1000 * 60);
-    const recencyScore = timeSinceCreated < 1440 ? 1000 - timeSinceCreated : 0;
-
-    return likesScore + commentsScore + recencyScore;
+  // Load more tweets when scrolling to the bottom
+  @HostListener('window:scroll', [])
+  onScroll(): void {
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100 && !this.loading) {
+      this.page++;
+      this.fetchTweets();
+    }
   }
 
   setupIntersectionObserver(): void {
@@ -118,13 +122,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   navigateToCommentView(tweetId: string): void {
     this.router.navigate(['/comment-view', tweetId]);
   }
-  
 
   toggleFollow(userId: string, isFollowing: boolean): void {
     if (isFollowing) {
       this.tweetService.unfollowUser(userId).subscribe(
         () => {
-          this.fetchTweets(); // Refresh the tweets list
+          this.page = 1; // Reset to page 1
+          this.tweets = []; // Clear tweets array
+          this.fetchTweets(); // Reload tweets from the beginning
         },
         error => {
           console.error('Error unfollowing user:', error);
@@ -133,7 +138,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     } else {
       this.tweetService.followUser(userId).subscribe(
         () => {
-          this.fetchTweets(); // Refresh the tweets list
+          this.page = 1; // Reset to page 1
+          this.tweets = []; // Clear tweets array
+          this.fetchTweets(); // Reload tweets from the beginning
         },
         error => {
           console.error('Error following user:', error);
@@ -170,8 +177,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       );
     }
   }
-  
-  
 
   navigateToUserProfile(userId: string): void {
     this.router.navigate(['/profile-view', userId]);
