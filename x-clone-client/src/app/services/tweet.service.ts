@@ -54,4 +54,13 @@ export class TweetService {
   getTweetById(tweetId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${tweetId}`, { headers: this.getHeaders() });
   }
+
+  bookmarkTweet(tweetId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/bookmark/${tweetId}`, {}, { headers: this.getHeaders() });
+  }
+  
+  unbookmarkTweet(tweetId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/unbookmark/${tweetId}`, {}, { headers: this.getHeaders() });
+  }
+  
 }

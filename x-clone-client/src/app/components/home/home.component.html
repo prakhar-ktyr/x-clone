@@ -83,9 +83,12 @@
           </span>
           <span (click)="navigateToCommentView(tweet._id)">
             <i class="fas fa-comment"></i> {{ tweet.comments.length }}
-          </span>          
+          </span>
           <span><i class="fas fa-retweet"></i> {{ tweet.retweets.length }}</span>
-        </div>
+          <span (click)="toggleBookmark(tweet)" [class.text-info]="tweet.isBookmarked">
+            <i class="fas fa-bookmark"></i> {{ tweet.isBookmarked ? 'Bookmarked' : 'Bookmark' }}
+          </span>          
+        </div>        
       </div>
     </div>
     

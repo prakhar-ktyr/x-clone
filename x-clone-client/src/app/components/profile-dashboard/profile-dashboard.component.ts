@@ -76,28 +76,6 @@ export class ProfileDashboardComponent implements OnInit, AfterViewInit {
     });
   }
 
-  toggleFollow(userId: string, isFollowing: boolean): void {
-    if (isFollowing) {
-      this.tweetService.unfollowUser(userId).subscribe(
-        () => {
-          this.loadUserTweets(); // Refresh the tweets list
-        },
-        error => {
-          console.error('Error unfollowing user:', error);
-        }
-      );
-    } else {
-      this.tweetService.followUser(userId).subscribe(
-        () => {
-          this.loadUserTweets(); // Refresh the tweets list
-        },
-        error => {
-          console.error('Error following user:', error);
-        }
-      );
-    }
-  }
-
   navigateToProfile(): void {
     this.router.navigate(['/profile/update']); // Navigate to the profile update page
   }

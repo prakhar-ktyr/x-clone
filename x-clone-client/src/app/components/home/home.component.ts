@@ -76,10 +76,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   fetchTweets(): void {
     if (this.loading) return;
     this.loading = true;
-
+  
     this.tweetService.getTweets(this.page, this.limit).subscribe(
       tweets => {
-        this.tweets = this.tweets.concat(tweets); // Append new tweets to the list
+        // Append new tweets to the list
+        console.log(tweets);
+        this.tweets = this.tweets.concat(tweets);
         this.loading = false;
       },
       error => {
@@ -87,7 +89,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.loading = false;
       }
     );
-  }
+  }  
 
   // Load more tweets when scrolling to the bottom
   @HostListener('window:scroll', [])
@@ -177,6 +179,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
       );
     }
   }
+
+  toggleBookmark(tweet: any): void {
+    if (tweet.isBookmarked) {
+      this.tweetService.unbookmarkTweet(tweet._id).subscribe(
+        (response: any) => {
+          tweet.isBookmarked = false;
+        },
+        error => {
+          console.error('Error unbookmarking tweet:', error);
+        }
+      );
+    } else {
+      this.tweetService.bookmarkTweet(tweet._id).subscribe(
+        (response: any) => {
+          tweet.isBookmarked = true;
+        },
+        error => {
+          if (error.status === 400 && error.error.message === 'Tweet already bookmarked') {
+            tweet.isBookmarked = true; // Ensure the UI reflects the correct state
+            console.warn('Tweet was already bookmarked.');
+          } else {
+            console.error('Error bookmarking tweet:', error);
+          }
+        }
+      );
+    }
+  }  
+  
 
   navigateToUserProfile(userId: string): void {
     this.router.navigate(['/profile-view', userId]);

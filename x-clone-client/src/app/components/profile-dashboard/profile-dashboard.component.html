@@ -30,9 +30,7 @@
           <strong>{{ profile.name }} (@{{ profile.handle }})</strong>
           <span class="text-muted">{{ tweet.createdAt | date:'short' }}</span>
         </div>
-        <button class="btn btn-sm" (click)="toggleFollow(tweet.author._id, tweet.author.isFollowing)">
-          {{ tweet.author.isFollowing ? 'Unfollow' : 'Follow' }}
-        </button>
+        
       </div>
       <div class="tweet-content my-2">
         {{ tweet.content }}
