@@ -1,3 +1,33 @@
+/* Follow/Unfollow Button Styling */
+.follow-btn {
+  padding: 5px 15px;
+  border-radius: 25px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.follow-btn.follow {
+  background-color: #1DA1F2;
+  color: white;
+  border: none;
+}
+
+.follow-btn.follow:hover {
+  background-color: #0d8ddd;
+}
+
+.follow-btn.unfollow {
+  background-color: white;
+  color: #1DA1F2;
+  border: 1px solid #1DA1F2;
+}
+
+.follow-btn.unfollow:hover {
+  background-color: #f5f8fa;
+  color: #0d8ddd;
+}
+
 body {
   background-color: #f5f8fa;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
