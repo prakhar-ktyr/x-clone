@@ -23,7 +23,7 @@ export class CommentService {
     return this.http.get(`${this.apiUrl}/${tweetId}`, { headers: this.getHeaders() });
   }
 
-  createComment(commentData: any): Observable<any> {
-    return this.http.post(this.apiUrl, commentData, { headers: this.getHeaders() });
+  createComment(tweetId: string, commentData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${tweetId}`, commentData, { headers: this.getHeaders() });
   }
 }

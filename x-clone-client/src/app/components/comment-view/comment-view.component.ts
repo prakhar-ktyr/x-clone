@@ -55,11 +55,10 @@ export class CommentViewComponent implements OnInit {
     if (this.commentContent.trim()) {
       const newComment = {
         content: this.commentContent,
-        author: this.authService.getUser().id,
-        tweetId: this.tweet._id
+        author: this.authService.getUser().id
       };
-
-      this.commentService.createComment(newComment).subscribe(
+  
+      this.commentService.createComment(this.tweet._id, newComment).subscribe(
         comment => {
           this.comments.push(comment);
           this.commentContent = ''; // Clear the comment input
@@ -69,5 +68,5 @@ export class CommentViewComponent implements OnInit {
         }
       );
     }
-  }
+  }  
 }
