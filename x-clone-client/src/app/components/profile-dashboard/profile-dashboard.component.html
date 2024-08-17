@@ -22,39 +22,93 @@
 
   <hr>
 
-  <div class="tweets-list mt-4">
-    <h4>Tweets</h4>
-    <div *ngFor="let tweet of tweets" class="tweet my-3 p-3 border rounded">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="tweet-author">
-          <strong>{{ profile.name }} (@{{ profile.handle }})</strong>
-          <span class="text-muted">{{ tweet.createdAt | date:'short' }}</span>
+  <!-- Tab Navigation -->
+  <ul class="nav nav-tabs mt-4">
+    <li class="nav-item">
+      <a class="nav-link active" id="tweets-tab" (click)="selectTab('tweets')">Tweets</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="retweets-tab" (click)="selectTab('retweets')">Retweets</a>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Tweets Tab -->
+    <div class="tab-pane fade show active" id="tweets-content" *ngIf="selectedTab === 'tweets'">
+      <div class="tweets-list mt-4">
+        <h4>Tweets</h4>
+        <div *ngFor="let tweet of tweets" class="tweet my-3 p-3 border rounded">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="tweet-author">
+              <strong>{{ profile.name }} (@{{ profile.handle }})</strong>
+              <span class="text-muted">{{ tweet.createdAt | date:'short' }}</span>
+            </div>
+          </div>
+          <div class="tweet-content my-2">
+            {{ tweet.content }}
+          </div>
+
+          <!-- Display images if available -->
+          <div class="tweet-images my-2" *ngIf="tweet.images && tweet.images.length > 0">
+            <div *ngFor="let image of tweet.images">
+              <img [src]="'http://localhost:3000/' + image" alt="Tweet image" class="img-fluid rounded mb-2" />
+            </div>
+          </div>
+
+          <!-- Display video if available -->
+          <div class="tweet-video my-2" *ngIf="tweet.video">
+            <video #videoElement controls loop muted class="img-fluid rounded">
+              <source [src]="'http://localhost:3000/' + tweet.video" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <div class="tweet-interactions d-flex justify-content-between">
+            <span><i class="fas fa-heart"></i> {{ tweet.likes.length }}</span>
+            <span><i class="fas fa-comment"></i> {{ tweet.comments.length }}</span>
+            <span><i class="fas fa-retweet"></i> {{ tweet.retweets.length }}</span>
+          </div>
         </div>
-        
       </div>
-      <div class="tweet-content my-2">
-        {{ tweet.content }}
-      </div>
+    </div>
 
-      <!-- Display images if available -->
-      <div class="tweet-images my-2" *ngIf="tweet.images && tweet.images.length > 0">
-        <div *ngFor="let image of tweet.images">
-          <img [src]="'http://localhost:3000/' + image" alt="Tweet image" class="img-fluid rounded mb-2" />
+    <!-- Retweets Tab -->
+    <div class="tab-pane fade" id="retweets-content" *ngIf="selectedTab === 'retweets'">
+      <div class="tweets-list mt-4">
+        <h4>Retweets</h4>
+        <div *ngFor="let tweet of retweets" class="tweet my-3 p-3 border rounded">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="tweet-author">
+              <strong>{{ tweet.author.name }} (@{{ tweet.author.handle }})</strong>
+              <span class="text-muted">{{ tweet.createdAt | date:'short' }}</span>
+            </div>
+          </div>
+          <div class="tweet-content my-2">
+            {{ tweet.content }}
+          </div>
+
+          <!-- Display images if available -->
+          <div class="tweet-images my-2" *ngIf="tweet.images && tweet.images.length > 0">
+            <div *ngFor="let image of tweet.images">
+              <img [src]="'http://localhost:3000/' + image" alt="Tweet image" class="img-fluid rounded mb-2" />
+            </div>
+          </div>
+
+          <!-- Display video if available -->
+          <div class="tweet-video my-2" *ngIf="tweet.video">
+            <video #videoElement controls loop muted class="img-fluid rounded">
+              <source [src]="'http://localhost:3000/' + tweet.video" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <div class="tweet-interactions d-flex justify-content-between">
+            <span><i class="fas fa-heart"></i> {{ tweet.likes.length }}</span>
+            <span><i class="fas fa-comment"></i> {{ tweet.comments.length }}</span>
+            <span><i class="fas fa-retweet"></i> {{ tweet.retweets.length }}</span>
+          </div>
         </div>
-      </div>
-
-      <!-- Display video if available -->
-      <div class="tweet-video my-2" *ngIf="tweet.video">
-        <video #videoElement controls loop muted class="img-fluid rounded">
-          <source [src]="'http://localhost:3000/' + tweet.video" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <div class="tweet-interactions d-flex justify-content-between">
-        <span><i class="fas fa-heart"></i> {{ tweet.likes.length }}</span>
-        <span><i class="fas fa-comment"></i> {{ tweet.comments.length }}</span>
-        <span><i class="fas fa-retweet"></i> {{ tweet.retweets.length }}</span>
       </div>
     </div>
   </div>

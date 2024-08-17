@@ -35,6 +35,10 @@ export class TweetService {
     return this.http.get(`${this.apiUrl}/user/${userId}`, { headers: this.getHeaders() });
   }
 
+  getRetweetsByUser(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/retweets`, { headers: this.getHeaders() });
+  }
+
   followUser(userId: string): Observable<any> {
     return this.http.post(`${environment.apiUrl}/follow/follow/${userId}`, {}, { headers: this.getHeaders() });
   }
@@ -74,5 +78,4 @@ export class TweetService {
   unretweetTweet(tweetId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/unretweet/${tweetId}`, {}, { headers: this.getHeaders() });
   }  
-  
 }

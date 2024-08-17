@@ -94,7 +94,6 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-
 // READ: Get tweets by the logged-in user
 router.get('/user', auth, async (req, res) => {
   try {
@@ -103,6 +102,22 @@ router.get('/user', auth, async (req, res) => {
       .populate('comments')
       .populate('likes')
       .populate('retweets');
+    res.json(tweets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// READ: Get retweets by the logged-in user
+router.get('/retweets', auth, async (req, res) => {
+  try {
+    const tweets = await Tweet.find({ retweets: req.user.id })
+      .populate('author', 'name handle profilePicture')
+      .populate('comments')
+      .populate('likes')
+      .populate('retweets')
+      .sort({ createdAt: -1 });
+    console.log('Retweets:', tweets);
     res.json(tweets);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -255,7 +270,6 @@ router.post('/unretweet/:id', auth, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 // READ: Get a tweet by ID
 router.get('/:id', auth, async (req, res) => {

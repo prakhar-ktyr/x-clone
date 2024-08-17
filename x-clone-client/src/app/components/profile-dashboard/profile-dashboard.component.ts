@@ -11,13 +11,15 @@ import { TweetService } from 'src/app/services/tweet.service';
 export class ProfileDashboardComponent implements OnInit, AfterViewInit {
   profile: any = {};
   tweets: any[] = [];
+  retweets: any[] = [];
+  selectedTab: string = 'tweets';
 
   @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
   constructor(
     private profileService: ProfileService,
     private tweetService: TweetService,
-    private router: Router // Inject Router service
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -51,8 +53,26 @@ export class ProfileDashboardComponent implements OnInit, AfterViewInit {
     );
   }
 
+  loadUserRetweets(): void {
+    this.tweetService.getRetweetsByUser().subscribe(
+      data => {
+        this.retweets = this.sortTweetsByDate(data);
+      },
+      error => {
+        console.error('Error fetching retweets', error);
+      }
+    );
+  }
+
   sortTweetsByDate(tweets: any[]): any[] {
     return tweets.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  selectTab(tab: string): void {
+    this.selectedTab = tab;
+    if (tab === 'retweets' && this.retweets.length === 0) {
+      this.loadUserRetweets();
+    }
   }
 
   setupIntersectionObserver(): void {
