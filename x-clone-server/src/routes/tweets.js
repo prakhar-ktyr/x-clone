@@ -160,9 +160,9 @@ router.post('/like/:id', auth, async (req, res) => {
       await notification.save();
 
       // Emit the notification event to the recipient via WebSocket
-      const recipientSocketId = activeUsers.get(tweet.author.toString());
+      const recipientSocketId = req.activeUsers.get(tweet.author.toString());
       if (recipientSocketId) {
-        io.to(recipientSocketId).emit('notification', notification);
+        req.io.to(recipientSocketId).emit('notification', notification);
       }
 
       res.status(200).json({ success: true, tweet });
@@ -272,9 +272,9 @@ router.post('/retweet/:id', auth, async (req, res) => {
       await notification.save();
 
       // Emit the notification event to the recipient via WebSocket
-      const recipientSocketId = activeUsers.get(tweet.author.toString());
+      const recipientSocketId = req.activeUsers.get(tweet.author.toString());
       if (recipientSocketId) {
-        io.to(recipientSocketId).emit('notification', notification);
+        req.io.to(recipientSocketId).emit('notification', notification);
       }
 
       res.status(200).json({ success: true, tweet });

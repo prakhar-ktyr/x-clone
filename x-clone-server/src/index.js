@@ -28,8 +28,18 @@ app.use(cors());
 app.use('/api/users', usersRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/profile', profileRoute);
-app.use('/api/follow', followRoute);
-app.use('/api/tweets', tweetRoute);
+// Pass `io` and `activeUsers` to routes
+app.use('/api/follow', (req, res, next) => {
+  req.io = io;
+  req.activeUsers = activeUsers;
+  next();
+}, followRoute);
+
+app.use('/api/tweets', (req, res, next) => {
+  req.io = io;
+  req.activeUsers = activeUsers;
+  next();
+}, tweetRoute);
 app.use('/api/comments', commentRoute); 
 app.use('/api/chat', chatRoute);
 

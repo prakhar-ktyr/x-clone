@@ -33,9 +33,9 @@ router.post('/follow/:id', auth, async (req, res) => {
     await notification.save();
 
     // Emit the notification event to the recipient via WebSocket
-    const recipientSocketId = activeUsers.get(userToFollow._id.toString());
+    const recipientSocketId = req.activeUsers.get(userToFollow._id.toString());
     if (recipientSocketId) {
-      io.to(recipientSocketId).emit('notification', notification);
+      req.io.to(recipientSocketId).emit('notification', notification);
     }
 
     res.json({ message: 'User followed successfully' });
