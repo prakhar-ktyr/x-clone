@@ -90,7 +90,6 @@ io.on('connection', (socket) => {
     }
   });
 });
-
 // Start the server
 server.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

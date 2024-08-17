@@ -4,6 +4,7 @@ const path = require('path');
 const router = express.Router();
 const User = require('../models/user');
 const Tweet = require('../models/tweet');
+const Notification = require('../models/notification');
 const auth = require('../middleware/auth');
 
 // Configure Multer for file uploads
@@ -148,7 +149,23 @@ router.post('/like/:id', auth, async (req, res) => {
     if (!tweet.likes.includes(req.user.id)) {
       tweet.likes.push(req.user.id);
       await tweet.save();
-      res.status(200).json({ success: true, tweet });  // Return the updated tweet
+
+      // Create a notification
+      const notification = new Notification({
+        type: 'like',
+        sender: req.user.id,
+        recipient: tweet.author,
+        tweet: tweet._id
+      });
+      await notification.save();
+
+      // Emit the notification event to the recipient via WebSocket
+      const recipientSocketId = activeUsers.get(tweet.author.toString());
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('notification', notification);
+      }
+
+      res.status(200).json({ success: true, tweet });
     } else {
       res.status(400).json({ success: false, message: 'Tweet already liked' });
     }
@@ -244,6 +261,22 @@ router.post('/retweet/:id', auth, async (req, res) => {
     if (!tweet.retweets.includes(user._id)) {
       tweet.retweets.push(user._id);
       await tweet.save();
+
+      // Create a notification
+      const notification = new Notification({
+        type: 'retweet',
+        sender: user._id,
+        recipient: tweet.author,
+        tweet: tweet._id
+      });
+      await notification.save();
+
+      // Emit the notification event to the recipient via WebSocket
+      const recipientSocketId = activeUsers.get(tweet.author.toString());
+      if (recipientSocketId) {
+        io.to(recipientSocketId).emit('notification', notification);
+      }
+
       res.status(200).json({ success: true, tweet });
     } else {
       res.status(400).json({ success: false, message: 'Tweet already retweeted' });

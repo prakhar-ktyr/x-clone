@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const auth = require('../middleware/auth');
+const Notification = require('../models/notification');
 
 // Follow a user
 router.post('/follow/:id', auth, async (req, res) => {
@@ -23,11 +24,26 @@ router.post('/follow/:id', auth, async (req, res) => {
     await currentUser.save();
     await userToFollow.save();
 
+    // Create a notification
+    const notification = new Notification({
+      type: 'follow',
+      sender: currentUser._id,
+      recipient: userToFollow._id,
+    });
+    await notification.save();
+
+    // Emit the notification event to the recipient via WebSocket
+    const recipientSocketId = activeUsers.get(userToFollow._id.toString());
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit('notification', notification);
+    }
+
     res.json({ message: 'User followed successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 // Unfollow a user
 router.post('/unfollow/:id', auth, async (req, res) => {
