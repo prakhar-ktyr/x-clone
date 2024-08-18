@@ -78,4 +78,8 @@ export class TweetService {
   unretweetTweet(tweetId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/unretweet/${tweetId}`, {}, { headers: this.getHeaders() });
   }  
+
+  getTweetsFromFollowing(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/following`, { headers: this.getHeaders() });
+  }
 }

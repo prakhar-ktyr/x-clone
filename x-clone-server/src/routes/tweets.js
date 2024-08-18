@@ -175,6 +175,22 @@ router.get('/trending-hashtags', async (req, res) => {
   }
 });
 
+// routes/tweets.js
+router.get('/following', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('following');
+    const followingIds = user.following.map(user => user._id);
+
+    const tweets = await Tweet.find({ author: { $in: followingIds } })
+      .populate('author', 'name handle profilePicture')
+      .sort({ createdAt: -1 }) // Sort by latest first
+      .limit(100);
+
+    res.json(tweets);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 
 // READ: Get tweets by a specific user ID

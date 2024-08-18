@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   page: number = 1; // Start from page 1
   limit: number = 15; // Load 15 tweets per page
   loading: boolean = false; // To prevent multiple simultaneous requests
+  followingTweets: any[] = []; // To store tweets from followed users
+  loadingFollowing: boolean = false; // To manage the loading state
 
   @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
@@ -31,6 +33,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.fetchTweets();
+    this.fetchFollowingTweets();
   }
 
   ngAfterViewInit(): void {
@@ -106,6 +109,22 @@ transformHashtags(content: string): SafeHtml {
       }
     );
   }  
+
+  fetchFollowingTweets(): void {
+    if (this.loadingFollowing) return;
+    this.loadingFollowing = true;
+
+    this.tweetService.getTweetsFromFollowing().subscribe(
+      (tweets) => {
+        this.followingTweets = tweets;
+        this.loadingFollowing = false;
+      },
+      (error) => {
+        console.error('Error fetching following tweets:', error);
+        this.loadingFollowing = false;
+      }
+    );
+  }
 
   // Load more tweets when scrolling to the bottom
   @HostListener('window:scroll', [])
