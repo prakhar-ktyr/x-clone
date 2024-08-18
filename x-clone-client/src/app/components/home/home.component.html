@@ -58,7 +58,7 @@
           </button>
         </div>
     
-        <div class="tweet-content my-2">
+        <div class="tweet-content my-2" [innerHTML]="transformHashtags(tweet.content)">
           {{ tweet.content }}
         </div>
     

@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ElementRef, QueryList, ViewChildren, 
 import { TweetService } from 'src/app/services/tweet.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('videoElement') videoElements!: QueryList<ElementRef>;
 
-  constructor(private tweetService: TweetService, private authService: AuthService, private router: Router) {}
+  constructor(
+    private tweetService: TweetService,
+    private authService: AuthService,
+    private router: Router,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
     this.fetchTweets();
@@ -30,6 +36,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.setupIntersectionObserver();
   }
+
+// Update the method to create hashtag links
+transformHashtags(content: string): SafeHtml {
+  const hashtagRegex = /#(\w+)/g;
+  const transformedContent = content.replace(hashtagRegex, (match) => {
+    const hashtag = match.slice(1);
+    return `<a href="/search?query=%23${hashtag}" style="color: #1DA1F2; text-decoration: none;">${match}</a>`;
+  });
+  return this.sanitizer.bypassSecurityTrustHtml(transformedContent);
+}
 
   updateCharacterCount(): void {
     this.charactersRemaining = this.maxCharacters - this.tweetContent.length;
@@ -110,9 +126,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           video.pause();
         }
       });
-    }, {
-      threshold: 0.5
-    });
+    }, { threshold: 0.5 });
 
     this.videoElements.changes.subscribe((videos: QueryList<ElementRef>) => {
       videos.forEach(videoElement => {
@@ -144,7 +158,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.tweets = []; // Clear tweets array
           this.fetchTweets(); // Reload tweets from the beginning
         },
-        error => {
+        (error) => {
           console.error('Error following user:', error);
         }
       );
@@ -158,7 +172,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           tweet.isLiked = false;
           tweet.likes = response.tweet.likes;  // Update the likes count from the response
         },
-        error => {
+        (error) => {
           console.error('Error unliking tweet:', error);
         }
       );
@@ -205,8 +219,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       );
     }
-  }  
-  
+  }
+
   toggleRetweet(tweet: any): void {
     if (tweet.isRetweeted) {
       this.tweetService.unretweetTweet(tweet._id).subscribe(
@@ -235,7 +249,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       );
     }
   }
-  
 
   navigateToUserProfile(userId: string): void {
     this.router.navigate(['/profile-view', userId]);
