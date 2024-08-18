@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,11 +8,19 @@ import { io, Socket } from 'socket.io-client';
 export class SocketService {
   private socket: Socket;
 
-  constructor() {
+  constructor(private authService: AuthService) {
     // Establish a connection to the backend Socket.io server
     this.socket = io('http://localhost:3000');
 
     // Listen for connection errors or disconnections
+    this.socket.on('connect', () => {
+      // Join the user's notification room after connecting
+      const user = this.authService.getUser();
+      if (user && user._id) {
+        this.joinRoom(user._id);
+      }
+    });
+
     this.socket.on('connect_error', (error) => {
       console.error('Socket connection error:', error);
     });
@@ -34,5 +43,20 @@ export class SocketService {
   // Disconnect the socket (if needed)
   disconnect(): void {
     this.socket.disconnect();
+  }
+
+  // Join a room using userId
+ // In your SocketService
+joinRoom(userId: string): void {
+  if (userId) {
+    this.socket.emit('joinRoom', userId);
+  } else {
+    console.error('User ID is null or undefined when attempting to join room');
+  }
+}
+
+  // Listen for notifications
+  onNotification(callback: (notification: any) => void): void {
+    this.socket.on('notification', callback);
   }
 }

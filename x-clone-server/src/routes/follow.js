@@ -24,12 +24,13 @@ router.post('/follow/:id', auth, async (req, res) => {
     await currentUser.save();
     await userToFollow.save();
 
-    // Create a notification
-    const notification = new Notification({
+    // Create and populate the notification
+    let notification = new Notification({
       type: 'follow',
       sender: currentUser._id,
       recipient: userToFollow._id,
     });
+    notification = await notification.populate('sender', 'handle profilePicture').execPopulate();
     await notification.save();
 
     // Emit the notification event to the recipient via WebSocket

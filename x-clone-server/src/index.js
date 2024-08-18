@@ -10,6 +10,7 @@ const followRoute = require('./routes/follow');
 const tweetRoute = require('./routes/tweets');
 const commentRoute = require('./routes/comments');
 const chatRoute = require('./routes/chat');
+const notificationRoute = require('./routes/notifications');
 const path = require('path');
 const http = require('http'); 
 const { Server } = require('socket.io'); 
@@ -42,6 +43,7 @@ app.use('/api/tweets', (req, res, next) => {
 }, tweetRoute);
 app.use('/api/comments', commentRoute); 
 app.use('/api/chat', chatRoute);
+app.use('/api/notifications', notificationRoute);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

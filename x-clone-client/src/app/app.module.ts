@@ -25,6 +25,7 @@ import { ProfileViewComponent } from './components/profile-view/profile-view.com
 import { MessagesComponent } from './components/messages/messages.component';
 import { CommentViewComponent } from './components/comment-view/comment-view.component';
 import { BookmarksComponent } from './components/bookmarks/bookmarks.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { BookmarksComponent } from './components/bookmarks/bookmarks.component';
     ProfileViewComponent,
     MessagesComponent,
     CommentViewComponent,
-    BookmarksComponent
+    BookmarksComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,

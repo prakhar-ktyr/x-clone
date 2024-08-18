@@ -14,6 +14,7 @@ import { ProfileViewComponent } from './components/profile-view/profile-view.com
 import { MessagesComponent } from './components/messages/messages.component';
 import { CommentViewComponent } from './components/comment-view/comment-view.component';
 import { BookmarksComponent } from './components/bookmarks/bookmarks.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -32,7 +33,8 @@ const routes: Routes = [
       { path: 'profile/update', component: ProfileComponent }, // Profile Update
       { path: 'profile-view/:id', component: ProfileViewComponent },
       { path: 'messages', component: MessagesComponent },
-      { path: 'comment-view/:id', component: CommentViewComponent }
+      { path: 'comment-view/:id', component: CommentViewComponent },
+      { path: 'notifications', component: NotificationsComponent },
       // Add more routes as needed
     ],
   },
