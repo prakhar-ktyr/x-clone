@@ -160,4 +160,28 @@
       display: block;
     }
   }
-  
+
+
+  /* Styling for the right sidebar */
+aside h6 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+aside .list-unstyled a {
+  color: #000; /* Bold black for hashtags */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+aside .list-unstyled a:hover {
+  color: #1DA1F2; /* Change color on hover */
+  text-decoration: underline; /* Underline on hover */
+}
+
+aside .list-unstyled span.text-muted {
+  display: block;
+  font-size: 14px;
+}
+

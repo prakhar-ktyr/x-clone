@@ -61,7 +61,6 @@
       </main>
   
       <!-- Right Sidebar -->
-      <!-- Right Sidebar -->
       <aside class="d-none d-lg-block col-lg-4 bg-white">
         <div class="p-3">
           <div class="input-group mb-3">
@@ -73,14 +72,16 @@
           <div class="bg-light p-3 rounded">
             <h6>What's happening</h6>
             <ul class="list-unstyled">
-              <li><a href="#">Trending Topic 1</a></li>
-              <li><a href="#">Trending Topic 2</a></li>
-              <li><a href="#">Trending Topic 3</a></li>
-              <li><a href="#">Trending Topic 4</a></li>
+              <li *ngFor="let hashtag of trendingHashtags">
+                <a [routerLink]="['/search']" [queryParams]="{ query: hashtag._id }">
+                  {{ hashtag._id }}
+                </a>
+                <span class="text-muted">{{ hashtag.count }} posts</span>
+              </li>
             </ul>
           </div>
         </div>
-      </aside>
+      </aside>           
     </div>
   </div>
   

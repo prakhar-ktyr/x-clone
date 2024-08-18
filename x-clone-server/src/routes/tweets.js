@@ -155,6 +155,27 @@ router.get('/search', auth, async (req, res) => {
   }
 });
 
+// Fetch the top 15 hashtags from the last week
+router.get('/trending-hashtags', async (req, res) => {
+  try {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    const trendingHashtags = await Tweet.aggregate([
+      { $match: { createdAt: { $gte: oneWeekAgo } } },
+      { $unwind: "$tags" },
+      { $group: { _id: "$tags", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 15 }
+    ]);
+
+    res.json(trendingHashtags);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
 
 // READ: Get tweets by a specific user ID
 router.get('/user/:id', async (req, res) => {
