@@ -113,10 +113,10 @@ transformHashtags(content: string): SafeHtml {
   fetchFollowingTweets(): void {
     if (this.loadingFollowing) return;
     this.loadingFollowing = true;
-
-    this.tweetService.getTweetsFromFollowing().subscribe(
+  
+    this.tweetService.getTweetsFromFollowing(this.page, this.limit).subscribe(
       (tweets) => {
-        this.followingTweets = tweets;
+        this.followingTweets = this.followingTweets.concat(tweets);
         this.loadingFollowing = false;
       },
       (error) => {
@@ -125,6 +125,7 @@ transformHashtags(content: string): SafeHtml {
       }
     );
   }
+  
 
   // Load more tweets when scrolling to the bottom
   @HostListener('window:scroll', [])

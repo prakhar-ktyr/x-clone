@@ -79,7 +79,7 @@ export class TweetService {
     return this.http.post(`${this.apiUrl}/unretweet/${tweetId}`, {}, { headers: this.getHeaders() });
   }  
 
-  getTweetsFromFollowing(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/following`, { headers: this.getHeaders() });
+  getTweetsFromFollowing(page: number = 1, limit: number = 15): Observable<any> {
+    return this.http.get(`${this.apiUrl}/following?page=${page}&limit=${limit}`, { headers: this.getHeaders() });
   }
 }

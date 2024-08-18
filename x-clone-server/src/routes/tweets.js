@@ -53,15 +53,14 @@ router.post('/', auth, upload.fields([{ name: 'images', maxCount: 5 }, { name: '
   }
 });
 
-// READ: Get all tweets with pagination
 router.get('/', auth, async (req, res) => {
   try {
     const currentUserId = req.user._id.toString(); // Ensure currentUserId is a string
     const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
     const limit = parseInt(req.query.limit) || 15; // Default to 15 tweets per page
 
-    // Fetch tweets with pagination
-    const tweets = await Tweet.find()
+    // Fetch tweets with pagination, excluding the user's own tweets
+    const tweets = await Tweet.find({ author: { $ne: currentUserId } })
       .populate('author', 'name handle followers profilePicture')
       .populate('comments')
       .populate('likes')
@@ -175,22 +174,51 @@ router.get('/trending-hashtags', async (req, res) => {
   }
 });
 
-// routes/tweets.js
 router.get('/following', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('following');
-    const followingIds = user.following.map(user => user._id);
+    const currentUserId = req.user._id.toString(); // Ensure currentUserId is a string
+    const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+    const limit = parseInt(req.query.limit) || 15; // Default to 15 tweets per page
 
+    // Fetch the current user's following list
+    const user = await User.findById(currentUserId).select('following');
+    const followingIds = user.following.map(id => id.toString());
+
+    // Fetch tweets from the users the current user is following
     const tweets = await Tweet.find({ author: { $in: followingIds } })
-      .populate('author', 'name handle profilePicture')
-      .sort({ createdAt: -1 }) // Sort by latest first
-      .limit(100);
+      .populate('author', 'name handle followers profilePicture')
+      .populate('comments')
+      .populate('likes')
+      .populate('retweets')
+      .sort({ createdAt: -1 }) // Sort by newest tweets
+      .skip((page - 1) * limit)
+      .limit(limit);
 
-    res.json(tweets);
+    // Map bookmarks to an array of strings (tweet IDs)
+    const bookmarkIds = req.user.bookmarks ? req.user.bookmarks.map(b => b._id.toString()) : [];
+
+    // Add isLiked, isBookmarked, and isRetweeted fields to each tweet object
+    const tweetsWithInfo = tweets.map(tweet => {
+      const tweetIdStr = tweet._id.toString();
+      const isLiked = tweet.likes.some(like => like._id.toString() === currentUserId); // Ensure _id is compared as a string
+      const isBookmarked = bookmarkIds.includes(tweetIdStr);  // Check if the tweet is bookmarked
+      const isRetweeted = tweet.retweets.some(retweetId => retweetId._id.toString() === currentUserId);  // Check if the tweet is retweeted
+
+      return {
+        ...tweet._doc,
+        isLiked: isLiked,
+        isBookmarked: isBookmarked,  // Include bookmark status
+        isRetweeted: isRetweeted  // Include retweet status
+      };
+    });
+
+    res.json(tweetsWithInfo);
   } catch (error) {
+    console.error('Error in fetching following tweets:', error);
     res.status(500).json({ message: error.message });
   }
 });
+
 
 
 // READ: Get tweets by a specific user ID
