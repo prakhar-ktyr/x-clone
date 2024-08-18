@@ -14,20 +14,31 @@
 <div class="tab-content px-3" id="homeTabContent">
   <div class="tab-pane fade show active" id="for-you" role="tabpanel" aria-labelledby="for-you-tab">
     <!-- For You tab content -->
-    <div class="tweet-box my-3">
+    <div class="tweet-box my-3 p-3 rounded">
       <textarea class="form-control" rows="3" placeholder="What is happening?!" [(ngModel)]="tweetContent" (input)="updateCharacterCount()"></textarea>
-
-      <!-- File input for images -->
-      <input type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*" class="form-control mt-2" />
-
-      <!-- File input for video -->
-      <input type="file" (change)="onFileChange($event, 'video')" accept="video/*" class="form-control mt-2" />
-
+    
       <div class="d-flex justify-content-between align-items-center mt-2">
-        <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining</span>
-        <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
+        <div class="tweet-actions">
+          <!-- File input for images with icon -->
+          <label class="upload-icon">
+            <input type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*" hidden />
+            <i class="fas fa-image"></i>
+          </label>
+    
+          <!-- File input for video with icon -->
+          <label class="upload-icon">
+            <input type="file" (change)="onFileChange($event, 'video')" accept="video/*" hidden />
+            <i class="fas fa-video"></i>
+          </label>
+        </div>
+    
+        <div>
+          <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining </span>
+          <button class="btn tweet-btn" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
+        </div>
       </div>
     </div>
+    
 
     <div class="tweets-list">
       <div *ngFor="let tweet of tweets" class="tweet my-3 p-3 border rounded">
@@ -98,18 +109,28 @@
 
   <div class="tab-pane fade" id="following" role="tabpanel" aria-labelledby="following-tab">
     <!-- Following tab content -->
-    <div class="tweet-box my-3">
+    <div class="tweet-box my-3 p-3 rounded">
       <textarea class="form-control" rows="3" placeholder="What is happening?!" [(ngModel)]="tweetContent" (input)="updateCharacterCount()"></textarea>
-
-      <!-- File input for images -->
-      <input type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*" class="form-control mt-2" />
-
-      <!-- File input for video -->
-      <input type="file" (change)="onFileChange($event, 'video')" accept="video/*" class="form-control mt-2" />
-
+    
       <div class="d-flex justify-content-between align-items-center mt-2">
-        <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining</span>
-        <button class="btn btn-primary" style="background-color: #1DA1F2;" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
+        <div class="tweet-actions">
+          <!-- File input for images with icon -->
+          <label class="upload-icon">
+            <input type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*" hidden />
+            <i class="fas fa-image"></i>
+          </label>
+    
+          <!-- File input for video with icon -->
+          <label class="upload-icon">
+            <input type="file" (change)="onFileChange($event, 'video')" accept="video/*" hidden />
+            <i class="fas fa-video"></i>
+          </label>
+        </div>
+    
+        <div>
+          <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining </span>
+          <button class="btn tweet-btn" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
+        </div>
       </div>
     </div>
 

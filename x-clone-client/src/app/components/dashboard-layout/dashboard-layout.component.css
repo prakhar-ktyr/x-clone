@@ -162,26 +162,57 @@
   }
 
 
-  /* Styling for the right sidebar */
+/* Styling for the right sidebar */
 aside h6 {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 15px;
 }
 
-aside .list-unstyled a {
+/* Initialize the counter for the list items */
+aside .list-unstyled {
+  counter-reset: hashtagCounter; /* Reset the counter */
+}
+
+aside .list-unstyled li {
+  margin-bottom: 10px; /* Add one line spacing between each hashtag */
+  position: relative;
+  padding-left: 20px; /* Space for the counter number */
+}
+
+aside .list-unstyled li:not(:last-child)::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background-color: #e1e8ed; /* Light grey line */
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+}
+
+/* Numbering for each list item */
+aside .list-unstyled li::before {
+  counter-increment: hashtagCounter; /* Increment the counter */
+  content: counter(hashtagCounter) ".";
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+  color: #555; /* Grey color for the numbers */
+}
+
+aside .list-unstyled li a {
   color: #000; /* Bold black for hashtags */
   font-weight: bold;
   text-decoration: none;
 }
 
-aside .list-unstyled a:hover {
+aside .list-unstyled li a:hover {
   color: #1DA1F2; /* Change color on hover */
   text-decoration: underline; /* Underline on hover */
 }
 
-aside .list-unstyled span.text-muted {
+aside .list-unstyled li span.text-muted {
   display: block;
   font-size: 14px;
 }
-
