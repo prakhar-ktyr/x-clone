@@ -8,7 +8,7 @@ const Notification = require('../models/notification');
 router.get('/', auth, async (req, res) => {
     try {
       const notifications = await Notification.find({ recipient: req.user.id })
-        .populate('sender', 'handle')  // Populate the sender's handle
+        .populate('sender', 'handle profilePicture')  // Populate the sender's handle
         .sort({ createdAt: -1 })
         .limit(20);
       res.json(notifications);

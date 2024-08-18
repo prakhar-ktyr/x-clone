@@ -28,11 +28,25 @@ export class NotificationsComponent implements OnInit {
 
     // Subscribe to real-time notifications
     this.socketService.onNotification((notification) => {
-      this.notifications.unshift(this.formatNotification(notification));
+      if (notification.sender && notification.sender.handle) {
+        this.notifications.unshift(this.formatNotification(notification));
+      } else {
+        // Fetch the notification again if sender data is not populated
+        this.notificationService.fetchNotifications().subscribe(
+          (data) => {
+            this.notifications = this.formatNotifications(data);
+          },
+          (error) => {
+            console.error('Error fetching notifications', error);
+          }
+        );
+      }
+
       if (this.notifications.length > 20) {
         this.notifications.pop();
       }
     });
+
   }
 
   formatNotifications(notifications: any[]): any[] {

@@ -140,6 +140,7 @@ router.get('/user/:id', async (req, res) => {
   }
 });
 
+// Like a tweet
 router.post('/like/:id', auth, async (req, res) => {
   try {
     const tweet = await Tweet.findById(req.params.id);
@@ -151,12 +152,16 @@ router.post('/like/:id', auth, async (req, res) => {
       await tweet.save();
 
       // Create a notification
-      const notification = new Notification({
+      let notification = new Notification({
         type: 'like',
         sender: req.user.id,
         recipient: tweet.author,
         tweet: tweet._id
       });
+
+      // Populate the sender's information
+      notification = await notification.populate('sender', 'handle profilePicture');
+
       await notification.save();
 
       // Emit the notification event to the recipient via WebSocket
@@ -249,6 +254,7 @@ router.get('/bookmarks', auth, async (req, res) => {
   }
 });
 
+// Retweet a tweet
 router.post('/retweet/:id', auth, async (req, res) => {
   try {
     const tweet = await Tweet.findById(req.params.id);
@@ -263,12 +269,16 @@ router.post('/retweet/:id', auth, async (req, res) => {
       await tweet.save();
 
       // Create a notification
-      const notification = new Notification({
+      let notification = new Notification({
         type: 'retweet',
         sender: user._id,
         recipient: tweet.author,
         tweet: tweet._id
       });
+
+      // Populate the sender's information
+      notification = await notification.populate('sender', 'handle profilePicture');
+
       await notification.save();
 
       // Emit the notification event to the recipient via WebSocket
@@ -285,7 +295,6 @@ router.post('/retweet/:id', auth, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 router.post('/unretweet/:id', auth, async (req, res) => {
   try {

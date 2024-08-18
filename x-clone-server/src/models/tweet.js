@@ -9,7 +9,12 @@ const tweetSchema = new mongoose.Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   images: [{ type: String }], // Array of image file paths
   video: { type: String },    // Single video file path
+  tags: [{ type: String }],   // Array of hashtags
   createdAt: { type: Date, default: Date.now },
 });
 
+// Create a text index on the content field for full-text search
+tweetSchema.index({ content: 'text' });
+
+// Export the Tweet model
 module.exports = mongoose.model('Tweet', tweetSchema);

@@ -1,7 +1,19 @@
 <div class="notifications-container">
   <h4>Notifications</h4>
   <div *ngFor="let notification of notifications" class="notification-item">
-    <p>{{ notification.message }}</p>
-    <span class="text-muted">{{ notification.createdAt | date:'short' }}</span>
+      <div class="notification-header">
+          <img 
+            [src]="'http://localhost:3000/' + notification.sender.profilePicture" 
+            alt="Profile Picture" 
+            class="profile-picture rounded-circle"
+          />
+          <div class="notification-text">
+              <strong>@{{ notification.sender.handle }}</strong> {{ notification.message }}
+              <div class="tweet-content">
+                <small>{{ notification.tweet?.content }}</small>
+              </div>
+          </div>
+      </div>
+      <div class="text-muted">{{ notification.createdAt | date:'short' }}</div>
   </div>
 </div>
