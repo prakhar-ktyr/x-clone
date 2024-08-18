@@ -26,6 +26,7 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { CommentViewComponent } from './components/comment-view/comment-view.component';
 import { BookmarksComponent } from './components/bookmarks/bookmarks.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { NotificationsComponent } from './components/notifications/notifications
     MessagesComponent,
     CommentViewComponent,
     BookmarksComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    SearchResultsComponent
   ],
   imports: [
     BrowserModule,

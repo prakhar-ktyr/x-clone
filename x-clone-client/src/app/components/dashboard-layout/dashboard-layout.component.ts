@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard-layout.component.css']
 })
 export class DashboardLayoutComponent implements OnInit {
+  searchQuery: string = ''; // Property to bind the search input
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -17,5 +18,12 @@ export class DashboardLayoutComponent implements OnInit {
   onLogout(): void {
     this.authService.logout(); // Log the user out
     this.router.navigate(['']); // Redirect to the landing page
+  }
+
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      // Navigate to the search results page with the search query
+      this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+    }
   }
 }

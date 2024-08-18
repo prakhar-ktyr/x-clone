@@ -33,12 +33,17 @@ router.post('/', auth, upload.fields([{ name: 'images', maxCount: 5 }, { name: '
     videoPath = req.files.video[0].path;
   }
 
+  // Extract hashtags from the content
+  const hashtags = content.match(/#[a-zA-Z0-9_]+/g) || []; // Match words starting with #
+  const normalizedTags = hashtags.map(tag => tag.toLowerCase()); // Normalize tags to lowercase
+
   try {
     const newTweet = new Tweet({
       content,
       author: req.user.id,
       images: imagePaths,
       video: videoPath,
+      tags: normalizedTags, // Store the normalized hashtags
     });
 
     await newTweet.save();
@@ -124,6 +129,32 @@ router.get('/retweets', auth, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+// SEARCH: Search for tweets by content or hashtags
+router.get('/search', auth, async (req, res) => {
+  try {
+    const { query } = req.query; // Get the search query from the URL
+    if (!query) {
+      return res.status(400).json({ message: 'Query parameter is required' });
+    }
+
+    // Search for tweets that match the query in content or tags
+    const tweets = await Tweet.find({
+      $text: { $search: query }
+    })
+    .populate('author', 'name handle followers profilePicture')
+    .populate('comments')
+    .populate('likes')
+    .populate('retweets')
+    .sort({ createdAt: -1 });
+
+    res.json(tweets);
+  } catch (error) {
+    console.error('Error in searching tweets:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 // READ: Get tweets by a specific user ID
 router.get('/user/:id', async (req, res) => {

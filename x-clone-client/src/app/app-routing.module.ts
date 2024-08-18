@@ -15,6 +15,7 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { CommentViewComponent } from './components/comment-view/comment-view.component';
 import { BookmarksComponent } from './components/bookmarks/bookmarks.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'messages', component: MessagesComponent },
       { path: 'comment-view/:id', component: CommentViewComponent },
       { path: 'notifications', component: NotificationsComponent },
+      { path: 'search', component: SearchResultsComponent }
       // Add more routes as needed
     ],
   },

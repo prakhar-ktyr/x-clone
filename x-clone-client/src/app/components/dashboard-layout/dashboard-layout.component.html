@@ -61,11 +61,14 @@
       </main>
   
       <!-- Right Sidebar -->
+      <!-- Right Sidebar -->
       <aside class="d-none d-lg-block col-lg-4 bg-white">
         <div class="p-3">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search">
-            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+            <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()">
+            <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">
+              <i class="fas fa-search"></i>
+            </button>
           </div>
           <div class="bg-light p-3 rounded">
             <h6>What's happening</h6>
