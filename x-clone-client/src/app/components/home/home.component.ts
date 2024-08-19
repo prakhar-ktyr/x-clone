@@ -40,7 +40,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.setupIntersectionObserver();
   }
 
-// Update the method to create hashtag links
 transformHashtags(content: string): SafeHtml {
   const hashtagRegex = /#(\w+)/g;
   const transformedContent = content.replace(hashtagRegex, (match) => {
