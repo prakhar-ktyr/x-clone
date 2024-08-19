@@ -65,7 +65,7 @@ db.once('open', () => {
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // Adjust this according to your needs
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
