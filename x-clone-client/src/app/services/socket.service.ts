@@ -46,14 +46,13 @@ export class SocketService {
   }
 
   // Join a room using userId
- // In your SocketService
-joinRoom(userId: string): void {
-  if (userId) {
-    this.socket.emit('joinRoom', userId);
-  } else {
-    console.error('User ID is null or undefined when attempting to join room');
+  joinRoom(userId: string): void {
+    if (userId) {
+      this.socket.emit('joinRoom', userId);
+    } else {
+      console.error('User ID is null or undefined when attempting to join room');
+    }
   }
-}
 
   // Listen for notifications
   onNotification(callback: (notification: any) => void): void {

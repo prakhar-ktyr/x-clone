@@ -7,6 +7,7 @@
           <h2>Create your account</h2>
         </div>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
           <div class="mb-3">
             <mat-form-field appearance="fill" class="w-100">
               <mat-label>Name</mat-label>
