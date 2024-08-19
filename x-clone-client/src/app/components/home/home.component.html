@@ -32,12 +32,22 @@
           </label>
         </div>
     
-        <div>
+        <div class="attached-files d-flex align-items-center">
+          <!-- Show a square icon for each attached image -->
+          <div *ngFor="let image of selectedImages" class="attached-icon bg-light border me-1">
+            <i class="fas fa-image"></i>
+          </div>
+    
+          <!-- Show a square icon if a video is attached -->
+          <div *ngIf="selectedVideo" class="attached-icon bg-light border me-1">
+            <i class="fas fa-video"></i>
+          </div>
+    
           <span [class.text-danger]="charactersRemaining < 0">{{ charactersRemaining }} characters remaining </span>
-          <button class="btn tweet-btn" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
+          <button class="btn tweet-btn ms-2" [disabled]="charactersRemaining < 0" (click)="onTweet()">Tweet</button>
         </div>
       </div>
-    </div>
+    </div>    
     
 
     <div class="tweets-list">

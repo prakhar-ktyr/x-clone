@@ -40,14 +40,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.setupIntersectionObserver();
   }
 
-transformHashtags(content: string): SafeHtml {
-  const hashtagRegex = /#(\w+)/g;
-  const transformedContent = content.replace(hashtagRegex, (match) => {
-    const hashtag = match.slice(1);
-    return `<a href="/search?query=%23${hashtag}" style="color: #1DA1F2; text-decoration: none;">${match}</a>`;
-  });
-  return this.sanitizer.bypassSecurityTrustHtml(transformedContent);
-}
+  transformHashtags(content: string): SafeHtml {
+    const hashtagRegex = /#(\w+)/g;
+    const transformedContent = content.replace(hashtagRegex, (match) => {
+      const hashtag = match.slice(1);
+      return `<a href="/search?query=%23${hashtag}" style="color: #1DA1F2; text-decoration: none;">${match}</a>`;
+    });
+    return this.sanitizer.bypassSecurityTrustHtml(transformedContent);
+  }
 
   updateCharacterCount(): void {
     this.charactersRemaining = this.maxCharacters - this.tweetContent.length;
