@@ -7,6 +7,9 @@
           <h2>Login</h2>
         </div>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!-- Error message display -->
+          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
           <div class="mb-3">
             <mat-form-field appearance="fill" class="w-100">
               <mat-label>Email</mat-label>

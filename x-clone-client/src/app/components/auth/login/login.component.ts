@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  errorMessage: string | null = null;  // Add this property
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
 
@@ -29,7 +30,12 @@ export class LoginComponent implements OnInit {
         },
         error => {
           console.error('Error logging in:', error);
-          // Handle login error
+          // Set the error message to be displayed in the UI
+          if (error.status === 400) {
+            this.errorMessage = 'Invalid credentials';
+          } else {
+            this.errorMessage = 'An error occurred during login. Please try again.';
+          }
         }
       );
     }
