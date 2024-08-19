@@ -19,6 +19,22 @@
       <div class="tweet-content my-2">
         {{ tweet.content }}
       </div>
+
+      <!-- Display images if available -->
+      <div class="tweet-images my-2" *ngIf="tweet.images && tweet.images.length > 0">
+        <div *ngFor="let image of tweet.images">
+          <img [src]="'http://localhost:3000/' + image" alt="Tweet image" class="img-fluid rounded mb-2" />
+        </div>
+      </div>
+  
+      <!-- Display video if available -->
+      <div class="tweet-video my-2" *ngIf="tweet.video">
+        <video #videoElement controls loop muted class="img-fluid rounded">
+          <source [src]="'http://localhost:3000/' + tweet.video" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
     </div>
   </div>
   
