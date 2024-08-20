@@ -57,13 +57,13 @@ export class NotificationsComponent implements OnInit {
     let message = '';
     switch (notification.type) {
       case 'like':
-        message = `User (@${notification.sender.handle}) liked your tweet.`;
+        message = ` liked your tweet.`;
         break;
       case 'retweet':
-        message = `User (@${notification.sender.handle}) retweeted your tweet.`;
+        message = ` retweeted your tweet.`;
         break;
       case 'follow':
-        message = `User (@${notification.sender.handle}) followed you.`;
+        message = ` followed you.`;
         break;
       default:
         message = 'You have a new notification.';
