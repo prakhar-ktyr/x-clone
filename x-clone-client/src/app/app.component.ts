@@ -27,8 +27,6 @@ export class AppComponent implements OnInit {
   }
 
   handleNotification(notification: any): void {
-    // Handle the notification (e.g., show a toast notification, update UI)
     console.log('New notification:', notification);
-    // You can implement further logic here to display notifications to the user
   }
 }

@@ -50,10 +50,7 @@ app.get('/', (req, res) => {
 });
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/x-clone', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://localhost:27017/x-clone');
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -102,6 +99,7 @@ io.on('connection', (socket) => {
     }
   });
 });
+
 // Start the server
 server.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

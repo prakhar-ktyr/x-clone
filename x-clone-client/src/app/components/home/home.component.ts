@@ -141,6 +141,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         const video: HTMLVideoElement = entry.target as HTMLVideoElement;
         if (entry.isIntersecting) {
           video.play();
+          video.muted = true;
         } else {
           video.pause();
         }

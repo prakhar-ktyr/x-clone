@@ -35,7 +35,6 @@ export class RegisterComponent implements OnInit {
             },
             loginError => {
               console.error('Error logging in:', loginError);
-              // Handle login error
               this.errorMessage = 'An error occurred during login. Please try again.';
             }
           );
